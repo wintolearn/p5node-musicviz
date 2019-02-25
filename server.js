@@ -74,7 +74,7 @@ io.sockets.on('connection',
     // We are given a websocket object in our function
     function (socket) {
 
-        console.log("We have a new client: " + socket.id);
+        //console.log("We have a new client: " + socket.id);
 
         // When this user emits, client side: socket.emit('otherevent',some data);
         socket.on('mouse',
@@ -92,7 +92,7 @@ io.sockets.on('connection',
         );
 
         socket.on('disconnect', function() {
-            console.log("Client has disconnected");
+            //console.log("Client has disconnected");
         });
     }
 );

@@ -10,6 +10,13 @@ var stepSize = 5;
 var touchStepSize = 2;
 var transp = 80;
 var ampConst = 0.015;
+var angle;
+var r;
+var x;
+var y;
+var amp;
+var countCx = 0;
+var countCol = 0;
 
 function preload() {
     song = loadSound('./comprehension.mp3');
@@ -29,11 +36,12 @@ function toggleSong() {
 
 function setup() {
     button = createButton('/PLAY/');
+    console.log(button);
 
     col = color(25,23,200,2);
     fontCol = color(255,255,255);
 
-    button.style('font-size', '35px');
+    button.style('font-size', '40px');
     button.style('background-color', col);
     button.style('color', fontCol);
 
@@ -64,20 +72,12 @@ function setup() {
         function(data) {
             //console.log("Got: " + data.x + " " + data.y);
             // Draw a blue circle
-            fill(0,0,255);
-            noStroke();
-
-            for (var i = 0; i < spectrum.length; i+=stepSize) {
-                var angle = map(i, 0, spectrum.length, 0, 360);
-                var amp = Math.pow(spectrum[i],2)*ampConst;
-                var r = map(amp, 0, 256, 20, 800);
-                var x = data.x+ r * cos(angle);
-                var y = data.y+ r * sin(angle);
-
-                stroke(i+random(100), random(data.x*0.5), random(data.y*0.5),transp);
-                line(data.x, data.y, x, y);
-
+            //spectrum = fft.analyze();
+            countCx+=1;
+            if(countCx%5===0) {
+                drawSpectrum(data.x, data.y);
             }
+
         }
     );
 }
@@ -86,26 +86,45 @@ function draw() {
     // Nothing
 
     //need this for holding mouse on computer to generate clients stuff on clients screen directly
+    //if(song.isLoaded() === false){
+    //countCol += 0.5;
+    //noStroke();
+    //}
+    //pushMatrix();
+
+    /**
+    if (countCol < 255) {
+
+    fill(random(255 - countCol * 0.5), random(255 - countCol * 0.5), random(255 - countCol * 0.5), 50);
+    textSize(30);
+    text("COMPREHENSION", windowWidth * 0.25, windowHeight * 0.45);
+    text("BY NOARU", windowWidth * 0.25, windowHeight * 0.45 + 40);
+    }
+     **/
+    //popMatrix();
 
     if(mouseIsPressed === true) {
-        fill(255);
-        noStroke();
+
         // Send the mouse coordinates
         sendmouse(mouseX,mouseY);
         spectrum = fft.analyze();
-        noStroke();
+
+        drawSpectrum(mouseX,mouseY);
 
 
-        for (var i = 0; i < spectrum.length; i+=stepSize) {
-            var angle = map(i, 0, spectrum.length, 0, 360);
-            var amp = Math.pow(spectrum[i],2)*ampConst;
-            var r = map(amp, 0, 256, 20, 800);
-            var x = mouseX+ r * cos(angle);
-            var y = mouseY+ r * sin(angle);
-            stroke(i+random(100), random(mouseX*0.5), random(mouseY*0.5),transp);
-            line(mouseX, mouseY, x, y);
-        }
+    }
+}
 
+
+function drawSpectrum(stX,stY) {
+    for (var i = 0; i < spectrum.length; i+=stepSize) {
+        angle = map(i, 0, spectrum.length, 0, 360);
+        amp = Math.pow(spectrum[i],2)*ampConst;
+        r = map(amp, 0, 256, 20, 800);
+        x = stX+ r * cos(angle);
+        y = stY+ r * sin(angle);
+        stroke(i+random(100), random(stX*0.5), random(stX*0.5),transp);
+        line(stX, stY, x, y);
     }
 }
 
@@ -132,7 +151,7 @@ function mouseClicked() {
 **/
 
 
-
+/**
 function touchMoved() {
 
 var xpos;
@@ -168,12 +187,12 @@ var ypos;
     }
 
 }
-
+**/
 
 // Function for sending to the socket
 function sendmouse(xpos, ypos) {
     // We are sending!
-    console.log("sendmouse: " + xpos + " " + ypos);
+    //console.log("sendmouse: " + xpos + " " + ypos);
 
     // Make a little object with  and y
     var data = {
