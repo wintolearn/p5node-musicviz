@@ -18,6 +18,7 @@ var amp;
 var countCx = 0;
 var countCol = 0;
 
+
 function preload() {
     song = loadSound('./comprehension.mp3');
 }
@@ -35,6 +36,8 @@ function toggleSong() {
 
 
 function setup() {
+
+
     button = createButton('/PLAY/');
     console.log(button);
 
@@ -83,6 +86,8 @@ function setup() {
 }
 
 function draw() {
+
+
     // Nothing
 
     //need this for holding mouse on computer to generate clients stuff on clients screen directly
@@ -106,11 +111,16 @@ function draw() {
     if(mouseIsPressed === true) {
 
         // Send the mouse coordinates
-        sendmouse(mouseX,mouseY);
+
         spectrum = fft.analyze();
 
-        drawSpectrum(mouseX,mouseY);
 
+        for (var i = 0; i < touches.length; i++) {
+            sendmouse(touches[i].x,touches[i].y);
+            drawSpectrum(touches[i].x,touches[i].y);
+            noStroke();
+
+        }
 
     }
 }

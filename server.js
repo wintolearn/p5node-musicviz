@@ -12,6 +12,9 @@ var path = require('path');
 var fs = require('fs');
 
 var hostname = '0.0.0.0';
+//var hostname = '192.168.0.10';
+
+
 var port = process.env.PORT || 3000;
 
 var server = http.createServer(handleRequest);

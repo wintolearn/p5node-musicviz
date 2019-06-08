@@ -9,6 +9,8 @@ button {
 
 body{
     overscroll-behavior-y: contain;
+    overflow-x: hidden;
+    position: relative;
     background:black;
     color:white;
     font-family: "Arial";
