@@ -19,6 +19,10 @@ var port = process.env.PORT || 3000;
 
 var server = http.createServer(handleRequest);
 
+var mongodb = require('mongodb');
+const MongoClient = require('mongodb').MongoClient;
+const test = require('assert');
+
 server.listen(port, hostname, function(){
     //console.log('listening on ' + hostname + ':' + port);
 });
@@ -66,6 +70,9 @@ function handleRequest(req, res) {
     );
 }
 
+//var uri = 'mongodb://gameblocks:password@ds143608.mlab.com:43608/gameblocks';
+var uri = 'mongodb://noaru_user:noarupw1@ds135217.mlab.com:35217/noaru';
+//mongodb://<dbuser>:<dbpassword>@ds135217.mlab.com:35217/noaru
 
 // WebSocket Portion
 // WebSockets work with the HTTP server
@@ -82,6 +89,33 @@ io.sockets.on('connection',
         // When this user emits, client side: socket.emit('otherevent',some data);
         socket.on('mouse',
             function(data) {
+
+                var x = data.x;
+                var y = data.y;
+                var unique_id = socket.id;
+
+
+
+                MongoClient.connect(uri, function (err, client) {
+
+                    console.log("adding x and y to database")
+
+                    if (err) throw err;
+
+                    const coords = client.db('noaru').collection('coords');
+
+                    //var coords = client.db.collection('coords');
+
+                    coords.insert({username: 'reddog24',unique_id: unique_id,timestamp: Date.now(),x: x,y: y}, function (err, result) {
+
+                        if (err) throw err;
+                    });
+
+
+                });
+
+
+                console.log('done adding to db' + data);
                 // Data comes in as whatever was sent, including objects
                 //console.log("Received: 'mouse' " + data.x + " " + data.y);
 
@@ -94,8 +128,82 @@ io.sockets.on('connection',
             }
         );
 
+        socket.on('getData', function() {
+            MongoClient.connect(uri, function (err, client) {
+
+                console.log("retrieving data")
+
+                if (err) throw err;
+
+                const coords = client.db('noaru').collection('coords');
+
+                //var coords = client.db.collection('coords');
+                //db.bios.find().sort( { name: 1 } )
+                coords.find({ username: 'reddog23' }).sort( { timestamp: 1 }).toArray(function(err, result) {
+                    //coords.find({ username: 'redcat77' }).sort( { timestamp: 1 }).limit(1).toArray(function(err,
+                    // result) {
+                    /*
+                    console.log("trying to find record");
+                    console.log(result);
+                    console.log(result[0]);
+                    console.log(result[0].timestamp);
+                    console.log(typeof result[0].timestamp);
+                    */
+                    var start_time = result[0].timestamp;
+
+                    //start at second record
+                    for(var i=1;i<result.length;i+=1) {
+                        console.log(i);
+
+                        var end_time = result[i].timestamp;
+
+                        var time_diff = end_time - start_time;
+                        console.log(time_diff);
+                        var x = result[i].x;
+                        var y = result[i].y;
+                        var data = {
+                            x: x,
+                            y: y
+                        };
+                        console.log(data);
+                        //io.emit('mouse', data);
+                        //console.log(result[i]);
+                        /*
+                        setTimeout(function(){
+                                io.emit('mouse', data);
+
+                            }, time_diff);
+
+                            //setTimeout(function(){
+                                //io.sockets.emit('mouse', data);
+                                //io.emit('mouse', data);
+                                //console.log(data);
+                            //},time_diff);
+
+                        }
+                        */
+                        setDelay(data, time_diff);
+                    }
+                    //now start looking through the records one by one
+                    //could get next record and then start a timer
+                    //could cycle through each record in the array
+
+                    if (err) throw err;
+                });
+
+
+
+            });
+        });
+
         socket.on('disconnect', function() {
             //console.log("Client has disconnected");
         });
     }
 );
+
+function setDelay(data,time_diff) {
+    setTimeout(function(){
+        io.emit('mouse', data);
+    }, time_diff);
+}
