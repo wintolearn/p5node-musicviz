@@ -25,11 +25,14 @@ var countCx = 0;
 var countCol = 0;
 var ampScale = 1;
 var ampExponent = 1;
+
 let ampScaleSlider;
 let offScaleSlider;
 let rSlider;
 let gSlider;
 let bSlider;
+
+var slider1,slider2,slider3,slider4,slider5;
 
 var r = 100;
 var g = 100;
@@ -173,9 +176,14 @@ function setup() {
         function(data) {
             //console.log("Got: " + data.x + " " + data.y);
             // Draw a blue circle
-            //spectrum = fft.analyze();
+            spectrum = fft.analyze();
             //countCx+=1;
             //if(countCx%5===0) {
+            ampScaleSlider.value(data.ampScale);
+            offScaleSlider.value(data.xOffScale);
+            rSlider.value(data.rSlider);
+            gSlider.value(data.gSlider);
+            bSlider.value(data.bSlider);
                 drawSpectrum(data.x, data.y);
             //}
 
@@ -204,9 +212,23 @@ function setup() {
 
 function draw() {
 
+    /*
+    if(ampScale!==ampScaleSlider.value()||xOffScale !== offScaleSlider.value()||r !== rSlider.value()||g !== gSlider.value()||b !== bSlider.value()){
+        var data = {
+            ampScale:ampScale,
+            xOffScale:xOffScale,
+            rSlider:rSlider,
+            gSlider:gSlider,
+            bSlider:bSlider
+        }
+
+        socket.emit('newSliderVals',data);
+
+    }
+    */
+
     ampScale = ampScaleSlider.value();
     xOffScale = offScaleSlider.value();
-
     r = rSlider.value();
     g = gSlider.value();
     b = bSlider.value();
@@ -268,7 +290,12 @@ function sendmouse(xpos, ypos,unique_username) {
     var data = {
         x: xpos,
         y: ypos,
-        unique_username: unique_username
+        unique_username: unique_username,
+        ampScale:ampScale,
+        xOffScale:xOffScale,
+        rSlider:r,
+        gSlider:g,
+        bSlider:b
     };
 
     // Send that object to the socket

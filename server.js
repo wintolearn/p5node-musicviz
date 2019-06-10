@@ -84,6 +84,13 @@ io.sockets.on('connection',
     // We are given a websocket object in our function
     function (socket) {
 
+        function setDelay(data,time_diff) {
+            setTimeout(function(){
+                //only send to client
+                socket.emit('mouse', data);
+            }, time_diff);
+        }
+
         //console.log("We have a new client: " + socket.id);
 
         // When this user emits, client side: socket.emit('otherevent',some data);
@@ -93,7 +100,12 @@ io.sockets.on('connection',
                 var x = data.x;
                 var y = data.y;
                 var unique_id = socket.id;
-                var unique_username = data.unique_username
+                var unique_username = data.unique_username;
+                var ampScale=data.ampScale;
+                var xOffScale=data.xOffScale;
+                var rSlider=data.rSlider;
+                var gSlider=data.gSlider;
+                var bSlider=bSlider;
 
 
 
@@ -108,7 +120,11 @@ io.sockets.on('connection',
 
                     //var coords = client.db.collection('coords');
 
-                    coords.insertOne({username: unique_username,unique_id: unique_id,timestamp: Date.now(),x: x,y: y}, function (err, result) {
+                    coords.insertOne({username: unique_username,unique_id: unique_id,timestamp: Date.now(),x: x,y: y,ampScale:ampScale,
+                        xOffScale:xOffScale,
+                        rSlider:rSlider,
+                        gSlider:gSlider,
+                        bSlider:bSlider}, function (err, result) {
 
                         if (err) throw err;
                     });
@@ -157,7 +173,12 @@ io.sockets.on('connection',
                         var y = result[i].y;
                         var data = {
                             x: x,
-                            y: y
+                            y: y,
+                            ampScale:result[i].ampScale,
+                            xOffScale:result[i].xOffScale,
+                            rSlider:result[i].rSlider,
+                            gSlider:result[i].gSlider,
+                            bSlider:result[i].bSlider
                         };
                         //console.log(data);
 
@@ -207,9 +228,3 @@ io.sockets.on('connection',
     }
 );
 
-function setDelay(data,time_diff) {
-    setTimeout(function(){
-        //only send to client
-        socket.emit('mouse', data);
-    }, time_diff);
-}
