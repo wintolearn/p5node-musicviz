@@ -18,7 +18,10 @@ var amp;
 var countCx = 0;
 var countCol = 0;
 var ampScale = 1;
-let rSlider;
+var ampExponent = 1;
+let ampScaleSlider;
+let infinitySlider;
+
 
 
 function preload() {
@@ -57,13 +60,15 @@ function setup() {
     button_get.style('font-size', '40px');
     button_get.style('background-color', col);
     button_get.style('color', fontCol);
-    button_get.position(150, 10);
+    button_get.position(windowWidth*0.67, 10);
 
-    rSlider = createSlider(0, 255, 100);
-    rSlider.position(20, 200);
+    ampScaleSlider = createSlider(0, 4, 0.25);
+    ampScaleSlider.position(20, windowHeight*0.8);
 
+    infinitySlider = createSlider(0, 4, 0.25);
+    infinitySlider.position(20, windowHeight*0.85);
 
-    createCanvas(windowWidth*0.9, windowHeight*0.9);
+    createCanvas(windowWidth*0.95, windowHeight*0.9);
     background(0);
     strokeWeight(20);
 
@@ -99,7 +104,8 @@ function setup() {
 
 function draw() {
 
-    ampScale = rSlider.value()/100;
+    ampScale = ampScaleSlider.value();
+    ampExponent = infinitySlider.value();
 
     if(mouseIsPressed === true) {
 
@@ -109,9 +115,11 @@ function draw() {
 
 
         for (var i = 0; i < touches.length; i++) {
-            sendmouse(touches[i].x,touches[i].y);
-            drawSpectrum(touches[i].x,touches[i].y);
-            noStroke();
+            if(touches[i].y<windowHeight*0.75) {
+                sendmouse(touches[i].x, touches[i].y);
+                drawSpectrum(touches[i].x, touches[i].y);
+                noStroke();
+            }
 
         }
 
@@ -125,7 +133,7 @@ function drawSpectrum(stX,stY) {
         amp = Math.pow(spectrum[i],2)*ampConst*ampScale;
         r = map(amp, 0, 256, 20, 500);
         x = stX+ r * cos(angle);
-        y = stY+ r * sin(angle);
+        y = stY+ pow(r * sin(angle),ampExponent);
         stroke(i+random(100), random(stX*0.5), random(stX*0.5),transp);
         line(stX, stY, x, y);
     }
