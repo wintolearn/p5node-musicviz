@@ -137,18 +137,8 @@ io.sockets.on('connection',
 
                 const coords = client.db('noaru').collection('coords');
 
-                //var coords = client.db.collection('coords');
-                //db.bios.find().sort( { name: 1 } )
                 coords.find({ username: 'reddog23' }).sort( { timestamp: 1 }).toArray(function(err, result) {
-                    //coords.find({ username: 'redcat77' }).sort( { timestamp: 1 }).limit(1).toArray(function(err,
-                    // result) {
-                    /*
-                    console.log("trying to find record");
-                    console.log(result);
-                    console.log(result[0]);
-                    console.log(result[0].timestamp);
-                    console.log(typeof result[0].timestamp);
-                    */
+
                     var start_time = result[0].timestamp;
 
                     //start at second record
@@ -166,22 +156,7 @@ io.sockets.on('connection',
                             y: y
                         };
                         console.log(data);
-                        //io.emit('mouse', data);
-                        //console.log(result[i]);
-                        /*
-                        setTimeout(function(){
-                                io.emit('mouse', data);
 
-                            }, time_diff);
-
-                            //setTimeout(function(){
-                                //io.sockets.emit('mouse', data);
-                                //io.emit('mouse', data);
-                                //console.log(data);
-                            //},time_diff);
-
-                        }
-                        */
                         setDelay(data, time_diff);
                     }
                     //now start looking through the records one by one

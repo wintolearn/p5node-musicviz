@@ -14,6 +14,12 @@ var angle;
 var r;
 var x;
 var y;
+var xOff;
+var yOff;
+
+var xOffScale=0.25;
+var yOffScale=0.25;
+
 var amp;
 var countCx = 0;
 var countCol = 0;
@@ -21,6 +27,7 @@ var ampScale = 1;
 var ampExponent = 1;
 let ampScaleSlider;
 let infinitySlider;
+let offScaleSlider;
 
 
 
@@ -66,7 +73,10 @@ function setup() {
     ampScaleSlider.position(20, windowHeight*0.8);
 
     infinitySlider = createSlider(0, 4, 0.25);
-    infinitySlider.position(20, windowHeight*0.85);
+    infinitySlider.position(20, windowHeight*0.825);
+
+    offScaleSlider = createSlider(0, 4, 0.25);
+    offScaleSlider.position(20, windowHeight*0.85);
 
     createCanvas(windowWidth*0.95, windowHeight*0.9);
     background(0);
@@ -132,10 +142,12 @@ function drawSpectrum(stX,stY) {
         angle = map(i, 0, spectrum.length, 0, 360);
         amp = Math.pow(spectrum[i],2)*ampConst*ampScale;
         r = map(amp, 0, 256, 20, 500);
+        xOff = (stX+ r * cos(angle))*xOffScale;
+        yOff = (stY+ pow(r * sin(angle),ampExponent))*yOffScale;
         x = stX+ r * cos(angle);
         y = stY+ pow(r * sin(angle),ampExponent);
         stroke(i+random(100), random(stX*0.5), random(stX*0.5),transp);
-        line(stX, stY, x, y);
+        line(stX+xOff, stY+yOff, x, y);
     }
 }
 
