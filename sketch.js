@@ -119,11 +119,11 @@ function setup() {
 
     sel = createSelect();
 
-    sel.style('font-size', '40px');
+    sel.style('font-size', '20px');
     sel.style('background-color', col);
     sel.style('color', fontCol);
 
-    sel.position(windowWidth*0.6, 10);
+    sel.position(windowWidth*0.25, windowHeight*0.05);
     sel.option('see other drawings');
     sel.changed(mySelectEvent);
 
@@ -133,11 +133,11 @@ function setup() {
     input.value('enter instagram name');
 
     submit_button = createButton('submit');
-    submit_button.position(windowWidth*0.1 + input.width, 10);
+    submit_button.position(windowWidth*0.25, 10);
     submit_button.mousePressed(greet);
 
-    submit_button.style('font-size', '40px');
-    submit_button.style('size', '40px');
+    submit_button.style('font-size', '20px');
+    submit_button.style('size', '20px');
     submit_button.style('background-color', col);
     submit_button.style('color', fontCol);
 
