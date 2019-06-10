@@ -35,9 +35,17 @@ var r = 100;
 var g = 100;
 var b = 100;
 
+var sel;
+
+var unique_username = '';
+
+let input, submit_button;
+
+
 
 function preload() {
     song = loadSound('./comprehension.mp3');
+
 }
 
 function toggleSong() {
@@ -57,6 +65,18 @@ function getData() {
 
 }
 
+function mySelectEvent() {
+    toggleSong();
+    var item = sel.value();
+    socket.emit('getData',item);
+    //text('It is a ' + item + '!', 50, 50);
+}
+
+function greet(){
+    unique_username = input.value();
+    console.log(unique_username);
+}
+
 
 function setup() {
 
@@ -68,11 +88,13 @@ function setup() {
     button.style('color', fontCol);
     button.position(10, 10);
 
+    /*
     button_get = createButton('/GET/');
     button_get.style('font-size', '40px');
     button_get.style('background-color', col);
     button_get.style('color', fontCol);
     button_get.position(windowWidth*0.67, 10);
+    */
 
     //slider min Value, max Value, starting Value, step size
     ampScaleSlider = createSlider(0.5, 3, 1,0.1);
@@ -95,6 +117,34 @@ function setup() {
     bSlider.position(20, windowHeight*0.95);
     bSlider.style('width', windowWidth*0.7+'px');
 
+    sel = createSelect();
+
+    sel.style('font-size', '40px');
+    sel.style('background-color', col);
+    sel.style('color', fontCol);
+
+    sel.position(windowWidth*0.6, 10);
+    sel.option('see other drawings');
+    sel.changed(mySelectEvent);
+
+    input = createInput();
+    input.position(windowWidth*0.4, 10);
+
+    input.value('enter instagram name');
+
+    submit_button = createButton('submit');
+    submit_button.position(windowWidth*0.1 + input.width, 10);
+    submit_button.mousePressed(greet);
+
+    submit_button.style('font-size', '40px');
+    submit_button.style('size', '40px');
+    submit_button.style('background-color', col);
+    submit_button.style('color', fontCol);
+
+
+    fill(255);
+
+    textAlign(CENTER);
 
 
     createCanvas(windowWidth*0.95, windowHeight*0.9);
@@ -102,7 +152,7 @@ function setup() {
     strokeWeight(5);
 
     button.mousePressed(toggleSong);
-    button_get.mousePressed(getData);
+    //button_get.mousePressed(getData);
 
     angleMode(DEGREES);
 
@@ -114,6 +164,8 @@ function setup() {
     //socket = io.connect('http://localhost:8080');
 
     socket = io();
+
+    socket.emit('getUniqueUsernames','getUniqueUsernames');
     // We make a named event called 'mouse' and write an
     // anonymous callback function
     socket.on('mouse',
@@ -129,6 +181,25 @@ function setup() {
 
         }
     );
+
+
+    socket.on('user_names',
+        // When we receive data
+        function(data) {
+        console.log('processing data');
+        console.log(data);
+
+            for(var i=0;i<data.length;i++){
+                sel.option(data[i]);
+            }
+
+
+
+        }
+    );
+
+
+
 }
 
 function draw() {
@@ -144,6 +215,7 @@ function draw() {
     if(mouseIsPressed === true) {
 
         if (mouseY < windowHeight * 0.75) {
+            sendmouse(mouseX, mouseY,unique_username);
             drawSpectrum(mouseX, mouseY);
         }
 
@@ -156,7 +228,7 @@ function draw() {
             for (var i = 0; i < touches.length; i++) {
 
                 if (touches[i].y < windowHeight * 0.75) {
-                    sendmouse(touches[i].x, touches[i].y);
+                    sendmouse(touches[i].x, touches[i].y,unique_username);
                     drawSpectrum(touches[i].x, touches[i].y);
 
                     noStroke();
@@ -188,14 +260,15 @@ function drawSpectrum(stX,stY) {
 }
 
 // Function for sending to the socket
-function sendmouse(xpos, ypos) {
+function sendmouse(xpos, ypos,unique_username) {
     // We are sending!
     //console.log("sendmouse: " + xpos + " " + ypos);
 
     // Make a little object with  and y
     var data = {
         x: xpos,
-        y: ypos
+        y: ypos,
+        unique_username: unique_username
     };
 
     // Send that object to the socket

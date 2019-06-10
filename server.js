@@ -93,12 +93,14 @@ io.sockets.on('connection',
                 var x = data.x;
                 var y = data.y;
                 var unique_id = socket.id;
+                var unique_username = data.unique_username
 
 
 
                 MongoClient.connect(uri, function (err, client) {
 
-                    console.log("adding x and y to database")
+                    console.log("adding x and y to database");
+                    console.log(unique_username);
 
                     if (err) throw err;
 
@@ -106,7 +108,7 @@ io.sockets.on('connection',
 
                     //var coords = client.db.collection('coords');
 
-                    coords.insert({username: 'reddog24',unique_id: unique_id,timestamp: Date.now(),x: x,y: y}, function (err, result) {
+                    coords.insertOne({username: unique_username,unique_id: unique_id,timestamp: Date.now(),x: x,y: y}, function (err, result) {
 
                         if (err) throw err;
                     });
@@ -128,16 +130,17 @@ io.sockets.on('connection',
             }
         );
 
-        socket.on('getData', function() {
+        socket.on('getData', function(data) {
             MongoClient.connect(uri, function (err, client) {
 
                 console.log("retrieving data")
+                console.log(data);
 
                 if (err) throw err;
 
                 const coords = client.db('noaru').collection('coords');
 
-                coords.find({ username: 'reddog23' }).sort( { timestamp: 1 }).toArray(function(err, result) {
+                coords.find({ username: data }).sort( { timestamp: 1 }).toArray(function(err, result) {
 
                     var start_time = result[0].timestamp;
 
@@ -165,6 +168,31 @@ io.sockets.on('connection',
 
                     if (err) throw err;
                 });
+
+
+
+            });
+        });
+
+        socket.on('getUniqueUsernames', function(data) {
+            MongoClient.connect(uri, function (err, client) {
+
+                console.log("getting usernames")
+                console.log(data);
+
+                if (err) throw err;
+
+                const coords = client.db('noaru').collection('coords');
+
+                coords.distinct('username', function(err, result) {
+
+                        console.log(result);
+                    socket.emit('user_names',result);
+
+                    if (err) throw err;
+                });
+
+
 
 
 
