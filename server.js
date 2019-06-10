@@ -105,7 +105,8 @@ io.sockets.on('connection',
                 var xOffScale=data.xOffScale;
                 var rSlider=data.rSlider;
                 var gSlider=data.gSlider;
-                var bSlider=bSlider;
+                var bSlider=data.bSlider;
+                var rEllipseFactor=data.rEllipseFactor;
 
 
 
@@ -124,7 +125,10 @@ io.sockets.on('connection',
                         xOffScale:xOffScale,
                         rSlider:rSlider,
                         gSlider:gSlider,
-                        bSlider:bSlider}, function (err, result) {
+                        bSlider:bSlider,
+                        rEllipseFactor:rEllipseFactor,
+
+                    }, function (err, result) {
 
                         if (err) throw err;
                     });
@@ -178,7 +182,9 @@ io.sockets.on('connection',
                             xOffScale:result[i].xOffScale,
                             rSlider:result[i].rSlider,
                             gSlider:result[i].gSlider,
-                            bSlider:result[i].bSlider
+                            bSlider:result[i].bSlider,
+                            rEllipseFactor:result[i].rEllipseFactor
+
                         };
                         //console.log(data);
 

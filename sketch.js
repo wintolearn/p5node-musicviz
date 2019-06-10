@@ -6,12 +6,12 @@ var song;
 var fft;
 var button;
 var spectrum;
-var stepSize = 5;
+var stepSize = 4;
 var touchStepSize = 2;
-var transp = 80;
+var transp = 140;
 var ampConst = 0.015;
 var angle;
-var r;
+var rad;
 var x;
 var y;
 var xOff;
@@ -25,12 +25,16 @@ var countCx = 0;
 var countCol = 0;
 var ampScale = 1;
 var ampExponent = 1;
+var rEllipseFactor = 1;
 
 let ampScaleSlider;
 let offScaleSlider;
 let rSlider;
 let gSlider;
 let bSlider;
+let rEllipseSlider;
+
+var drawingCutOff = 0.7;
 
 var slider1,slider2,slider3,slider4,slider5;
 
@@ -100,6 +104,10 @@ function setup() {
     */
 
     //slider min Value, max Value, starting Value, step size
+    rEllipseSlider = createSlider(0, 2, 0,0.1);
+    rEllipseSlider.position(20, windowHeight*0.70);
+    rEllipseSlider.style('width', windowWidth*0.7+'px');
+
     ampScaleSlider = createSlider(0.5, 3, 1,0.1);
     ampScaleSlider.position(20, windowHeight*0.75);
     ampScaleSlider.style('width', windowWidth*0.7+'px');
@@ -184,6 +192,7 @@ function setup() {
             rSlider.value(data.rSlider);
             gSlider.value(data.gSlider);
             bSlider.value(data.bSlider);
+            rEllipseSlider.value(data.rEllipseFactor);
                 drawSpectrum(data.x, data.y);
             //}
 
@@ -232,11 +241,12 @@ function draw() {
     r = rSlider.value();
     g = gSlider.value();
     b = bSlider.value();
+    rEllipseFactor = rEllipseSlider.value();
 
 
     if(mouseIsPressed === true) {
 
-        if (mouseY < windowHeight * 0.75 && mouseY>windowHeight*0.1) {
+        if (mouseY < windowHeight * (drawingCutOff-0.025) && mouseY>windowHeight*0.1) {
             sendmouse(mouseX, mouseY,unique_username);
             drawSpectrum(mouseX, mouseY);
         }
@@ -249,7 +259,7 @@ function draw() {
         if (touches.length > 0) {
             for (var i = 0; i < touches.length; i++) {
 
-                if (touches[i].y < windowHeight * 0.75 && touches[i].y>windowHeight*0.1) {
+                if (touches[i].y < windowHeight * (drawingCutOff-0.025) && touches[i].y>windowHeight*0.1) {
                     sendmouse(touches[i].x, touches[i].y,unique_username);
                     drawSpectrum(touches[i].x, touches[i].y);
 
@@ -262,20 +272,23 @@ function draw() {
     }
 }
 
+var randColorDiv = 1.5;
 
 function drawSpectrum(stX,stY) {
     //console.log(spectrum);
     if (spectrum !== undefined) {
-        for (var i = 0; i < spectrum.length; i += stepSize) {
-            angle = map(i, 0, spectrum.length, 0, 360);
-            amp = Math.pow(spectrum[i], 1.7) * ampConst * ampScale;
-            r = Math.min(map(amp, 0, 256, 20, windowWidth*0.5),windowWidth*0.25);
-            xOff = (r * cos(angle)) * xOffScale;
-            yOff = (pow(r * sin(angle), ampExponent)) * yOffScale;
-            x = stX + r * cos(angle);
-            y = stY + pow(r * sin(angle), ampExponent);
+        for (var i = 20; i < spectrum.length-40; i += stepSize) {
+            angle = map(i, 20, spectrum.length-40, 0, 360);
+            amp = Math.pow(spectrum[i], 1.65) * ampConst * ampScale;
+            rad = Math.min(map(amp, 0, 256, 20, windowWidth*0.5),windowWidth*0.3);
+            xOff = (rad * cos(angle)) * xOffScale;
+            yOff = (pow(rad * sin(angle), ampExponent)) * yOffScale;
+            x = stX + rad * cos(angle);
+            y = stY + pow(rad * sin(angle), ampExponent);
             //stroke(r+(i + random(100))/50, random(stX * 0.5), random(stX * 0.5), transp);
-            stroke(r+(i/5 + random(200))/5, g+(i/5 + random(200))/5, b+(i/5 + random(200))/5, transp);
+            stroke(r+(i/5 + random(200))/randColorDiv, g+(i/5 + random(200))/randColorDiv, b+(i/5 + random(200))/randColorDiv, transp);
+            fill(r+(i/5 + random(200))/randColorDiv, g+(i/5 + random(200))/randColorDiv, b+(i/5 + random(200))/randColorDiv, transp/7);
+            ellipse(x,y,rad*rEllipseFactor,rad*rEllipseFactor);
             line(stX + xOff, stY + yOff, x, y);
         }
     }
@@ -295,7 +308,8 @@ function sendmouse(xpos, ypos,unique_username) {
         xOffScale:xOffScale,
         rSlider:r,
         gSlider:g,
-        bSlider:b
+        bSlider:b,
+        rEllipseFactor:rEllipseFactor
     };
 
     // Send that object to the socket
