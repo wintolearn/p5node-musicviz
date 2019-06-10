@@ -99,8 +99,8 @@ io.sockets.on('connection',
 
                 MongoClient.connect(uri, function (err, client) {
 
-                    console.log("adding x and y to database");
-                    console.log(unique_username);
+                    //console.log("adding x and y to database");
+                    //console.log(unique_username);
 
                     if (err) throw err;
 
@@ -117,12 +117,13 @@ io.sockets.on('connection',
                 });
 
 
-                console.log('done adding to db' + data);
+                //console.log('done adding to db' + data);
                 // Data comes in as whatever was sent, including objects
                 //console.log("Received: 'mouse' " + data.x + " " + data.y);
 
-                // Send it to all other clients
-                socket.broadcast.emit('mouse', data);
+                // No need with this version to send to all clients
+
+                //socket.broadcast.emit('mouse', data);
 
                 // This is a way to send to everyone including sender
                 // io.sockets.emit('message', "this goes to everyone");
@@ -133,8 +134,8 @@ io.sockets.on('connection',
         socket.on('getData', function(data) {
             MongoClient.connect(uri, function (err, client) {
 
-                console.log("retrieving data")
-                console.log(data);
+                //console.log("retrieving data")
+                //console.log(data);
 
                 if (err) throw err;
 
@@ -146,19 +147,19 @@ io.sockets.on('connection',
 
                     //start at second record
                     for(var i=1;i<result.length;i+=1) {
-                        console.log(i);
+                        //console.log(i);
 
                         var end_time = result[i].timestamp;
 
                         var time_diff = end_time - start_time;
-                        console.log(time_diff);
+                        //console.log(time_diff);
                         var x = result[i].x;
                         var y = result[i].y;
                         var data = {
                             x: x,
                             y: y
                         };
-                        console.log(data);
+                        //console.log(data);
 
                         setDelay(data, time_diff);
                     }
@@ -177,8 +178,8 @@ io.sockets.on('connection',
         socket.on('getUniqueUsernames', function(data) {
             MongoClient.connect(uri, function (err, client) {
 
-                console.log("getting usernames")
-                console.log(data);
+                //console.log("getting usernames")
+                //console.log(data);
 
                 if (err) throw err;
 
@@ -186,7 +187,8 @@ io.sockets.on('connection',
 
                 coords.distinct('username', function(err, result) {
 
-                        console.log(result);
+                        //console.log(result);
+                        //only send to client
                     socket.emit('user_names',result);
 
                     if (err) throw err;
@@ -207,6 +209,7 @@ io.sockets.on('connection',
 
 function setDelay(data,time_diff) {
     setTimeout(function(){
-        io.emit('mouse', data);
+        //only send to client
+        socket.emit('mouse', data);
     }, time_diff);
 }

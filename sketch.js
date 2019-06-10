@@ -74,7 +74,7 @@ function mySelectEvent() {
 
 function greet(){
     unique_username = input.value();
-    console.log(unique_username);
+    //console.log(unique_username);
 }
 
 
@@ -186,8 +186,8 @@ function setup() {
     socket.on('user_names',
         // When we receive data
         function(data) {
-        console.log('processing data');
-        console.log(data);
+        //console.log('processing data');
+        //console.log(data);
 
             for(var i=0;i<data.length;i++){
                 sel.option(data[i]);
@@ -242,7 +242,7 @@ function draw() {
 
 
 function drawSpectrum(stX,stY) {
-    console.log(spectrum);
+    //console.log(spectrum);
     if (spectrum !== undefined) {
         for (var i = 0; i < spectrum.length; i += stepSize) {
             angle = map(i, 0, spectrum.length, 0, 360);
