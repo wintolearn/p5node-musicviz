@@ -83,7 +83,7 @@ function setup() {
     button = createButton('/PLAY/');
     col = color(25,23,200,2);
     fontCol = color(255,255,255);
-    button.style('font-size', '40px');
+    button.style('font-size', '30px');
     button.style('background-color', col);
     button.style('color', fontCol);
     button.position(10, 10);
@@ -123,17 +123,17 @@ function setup() {
     sel.style('background-color', col);
     sel.style('color', fontCol);
 
-    sel.position(windowWidth*0.25, windowHeight*0.05);
+    sel.position(windowWidth*0.25+50, windowHeight*0.05);
     sel.option('see other drawings');
     sel.changed(mySelectEvent);
 
     input = createInput();
-    input.position(windowWidth*0.4, 10);
+    input.position(windowWidth*0.45+50, 10);
 
     input.value('enter instagram name');
 
     submit_button = createButton('submit');
-    submit_button.position(windowWidth*0.25, 10);
+    submit_button.position(windowWidth*0.25+50, 10);
     submit_button.mousePressed(greet);
 
     submit_button.style('font-size', '20px');
@@ -214,7 +214,7 @@ function draw() {
 
     if(mouseIsPressed === true) {
 
-        if (mouseY < windowHeight * 0.75) {
+        if (mouseY < windowHeight * 0.75 && mouseY>windowHeight*0.1) {
             sendmouse(mouseX, mouseY,unique_username);
             drawSpectrum(mouseX, mouseY);
         }
@@ -227,7 +227,7 @@ function draw() {
         if (touches.length > 0) {
             for (var i = 0; i < touches.length; i++) {
 
-                if (touches[i].y < windowHeight * 0.75) {
+                if (touches[i].y < windowHeight * 0.75 && touches[i].y>windowHeight*0.1) {
                     sendmouse(touches[i].x, touches[i].y,unique_username);
                     drawSpectrum(touches[i].x, touches[i].y);
 
