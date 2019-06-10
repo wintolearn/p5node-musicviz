@@ -18,7 +18,7 @@ var xOff;
 var yOff;
 
 var xOffScale=0.25;
-var yOffScale=0.25;
+var yOffScale=xOffScale*1.2;
 
 var amp;
 var countCx = 0;
@@ -26,9 +26,14 @@ var countCol = 0;
 var ampScale = 1;
 var ampExponent = 1;
 let ampScaleSlider;
-let infinitySlider;
 let offScaleSlider;
+let rSlider;
+let gSlider;
+let bSlider;
 
+var r = 100;
+var g = 100;
+var b = 100;
 
 
 function preload() {
@@ -69,18 +74,32 @@ function setup() {
     button_get.style('color', fontCol);
     button_get.position(windowWidth*0.67, 10);
 
-    ampScaleSlider = createSlider(0, 4, 0.25);
-    ampScaleSlider.position(20, windowHeight*0.8);
+    //slider min Value, max Value, starting Value, step size
+    ampScaleSlider = createSlider(0.5, 3, 1,0.1);
+    ampScaleSlider.position(20, windowHeight*0.75);
+    ampScaleSlider.style('width', windowWidth*0.7+'px');
 
-    infinitySlider = createSlider(0, 4, 0.25);
-    infinitySlider.position(20, windowHeight*0.825);
+    offScaleSlider = createSlider(0, 2, 0,0.1);
+    offScaleSlider.position(20, windowHeight*0.8);
+    offScaleSlider.style('width', windowWidth*0.7+'px');
 
-    offScaleSlider = createSlider(0, 4, 0.25);
-    offScaleSlider.position(20, windowHeight*0.85);
+    rSlider = createSlider(0, 255, 100,1);
+    rSlider.position(20, windowHeight*0.85);
+    rSlider.style('width', windowWidth*0.7+'px');
+
+    gSlider = createSlider(0, 255, 100,1);
+    gSlider.position(20, windowHeight*0.9);
+    gSlider.style('width', windowWidth*0.7+'px');
+
+    bSlider = createSlider(0, 255, 100,1);
+    bSlider.position(20, windowHeight*0.95);
+    bSlider.style('width', windowWidth*0.7+'px');
+
+
 
     createCanvas(windowWidth*0.95, windowHeight*0.9);
     background(0);
-    strokeWeight(20);
+    strokeWeight(5);
 
     button.mousePressed(toggleSong);
     button_get.mousePressed(getData);
@@ -115,22 +134,35 @@ function setup() {
 function draw() {
 
     ampScale = ampScaleSlider.value();
-    ampExponent = infinitySlider.value();
+    xOffScale = offScaleSlider.value();
+
+    r = rSlider.value();
+    g = gSlider.value();
+    b = bSlider.value();
+
 
     if(mouseIsPressed === true) {
+
+        if (mouseY < windowHeight * 0.75) {
+            drawSpectrum(mouseX, mouseY);
+        }
 
         // Send the mouse coordinates
 
         spectrum = fft.analyze();
 
 
-        for (var i = 0; i < touches.length; i++) {
-            if(touches[i].y<windowHeight*0.75) {
-                sendmouse(touches[i].x, touches[i].y);
-                drawSpectrum(touches[i].x, touches[i].y);
-                noStroke();
-            }
+        if (touches.length > 0) {
+            for (var i = 0; i < touches.length; i++) {
 
+                if (touches[i].y < windowHeight * 0.75) {
+                    sendmouse(touches[i].x, touches[i].y);
+                    drawSpectrum(touches[i].x, touches[i].y);
+
+                    noStroke();
+                }
+
+            }
         }
 
     }
@@ -138,16 +170,20 @@ function draw() {
 
 
 function drawSpectrum(stX,stY) {
-    for (var i = 0; i < spectrum.length; i+=stepSize) {
-        angle = map(i, 0, spectrum.length, 0, 360);
-        amp = Math.pow(spectrum[i],2)*ampConst*ampScale;
-        r = map(amp, 0, 256, 20, 500);
-        xOff = (stX+ r * cos(angle))*xOffScale;
-        yOff = (stY+ pow(r * sin(angle),ampExponent))*yOffScale;
-        x = stX+ r * cos(angle);
-        y = stY+ pow(r * sin(angle),ampExponent);
-        stroke(i+random(100), random(stX*0.5), random(stX*0.5),transp);
-        line(stX+xOff, stY+yOff, x, y);
+    console.log(spectrum);
+    if (spectrum !== undefined) {
+        for (var i = 0; i < spectrum.length; i += stepSize) {
+            angle = map(i, 0, spectrum.length, 0, 360);
+            amp = Math.pow(spectrum[i], 1.7) * ampConst * ampScale;
+            r = Math.min(map(amp, 0, 256, 20, windowWidth*0.5),windowWidth*0.25);
+            xOff = (r * cos(angle)) * xOffScale;
+            yOff = (pow(r * sin(angle), ampExponent)) * yOffScale;
+            x = stX + r * cos(angle);
+            y = stY + pow(r * sin(angle), ampExponent);
+            //stroke(r+(i + random(100))/50, random(stX * 0.5), random(stX * 0.5), transp);
+            stroke(r+(i/5 + random(200))/5, g+(i/5 + random(200))/5, b+(i/5 + random(200))/5, transp);
+            line(stX + xOff, stY + yOff, x, y);
+        }
     }
 }
 
