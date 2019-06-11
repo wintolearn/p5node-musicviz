@@ -279,7 +279,7 @@ function draw() {
                 endingTextDarkness+=0.5;
             }
             fill(150-endingTextDarkness,150-endingTextDarkness,150-endingTextDarkness,30);
-            textSize(30);
+            textSize(20);
             strokeWeight(0);
             endingText = 'screenshot and post to instagram\n #comprehension_art     @noaru_band';
             text(endingText, windowWidth * 0.4, windowHeight * 0.65);
