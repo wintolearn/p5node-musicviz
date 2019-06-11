@@ -221,7 +221,9 @@ function setup() {
 }
 
 function draw() {
-    frames+=1;
+    //frames+=1;
+
+    /*
     if(frames>0&&frames<3600) {
         if (frames % 4 === 0) {
             //console.log(frames);
@@ -255,6 +257,7 @@ function draw() {
             background(0, 0, 0, 1);
         }
     }
+    */
 
 
 
