@@ -43,6 +43,7 @@ var g = 100;
 var b = 100;
 
 var sel;
+var frames=0;
 
 var unique_username = '';
 
@@ -220,6 +221,10 @@ function setup() {
 }
 
 function draw() {
+    frames+=1;
+    if(frames%20===0) {
+        background(0, 0, 0, 15);
+    }
 
     /*
     if(ampScale!==ampScaleSlider.value()||xOffScale !== offScaleSlider.value()||r !== rSlider.value()||g !== gSlider.value()||b !== bSlider.value()){
