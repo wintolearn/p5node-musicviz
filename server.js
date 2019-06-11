@@ -74,6 +74,16 @@ function handleRequest(req, res) {
 var uri = 'mongodb://noaru_user:noarupw1@ds135217.mlab.com:35217/noaru?connectTimeoutMS=300000';
 //mongodb://<dbuser>:<dbpassword>@ds135217.mlab.com:35217/noaru
 
+var coords;
+
+MongoClient.connect(uri, function (err, client) {
+
+    if (err) throw err;
+
+    coords = client.db('noaru').collection('coords');
+
+});
+
 var options = { server:
         { socketOptions:
                 {
@@ -82,6 +92,8 @@ var options = { server:
                 }
         }
 };
+
+
 
 // WebSocket Portion
 // WebSockets work with the HTTP server
@@ -119,14 +131,14 @@ io.sockets.on('connection',
 
 
 
-                MongoClient.connect(uri, function (err, client) {
+                //MongoClient.connect(uri, function (err, client) {
 
                     //console.log("adding x and y to database");
                     //console.log(unique_username);
 
-                    if (err) throw err;
+                    //if (err) throw err;
 
-                    const coords = client.db('noaru').collection('coords');
+                    //const coords = client.db('noaru').collection('coords');
 
                     //var coords = client.db.collection('coords');
 
@@ -145,7 +157,7 @@ io.sockets.on('connection',
                     //client.close();
 
 
-                });
+                //});
 
 
                 //console.log('done adding to db' + data);
@@ -163,14 +175,15 @@ io.sockets.on('connection',
         );
 
         socket.on('getData', function(data) {
-            MongoClient.connect(uri, function (err, client) {
+
+            //MongoClient.connect(uri, function (err, client) {
 
                 //console.log("retrieving data")
                 //console.log(data);
 
-                if (err) throw err;
+                //if (err) throw err;
 
-                const coords = client.db('noaru').collection('coords');
+                //const coords = client.db('noaru').collection('coords');
 
                 coords.find({ username: data }).sort( { timestamp: 1 }).toArray(function(err, result) {
 
@@ -204,8 +217,8 @@ io.sockets.on('connection',
                     //could get next record and then start a timer
                     //could cycle through each record in the array
 
-                    if (err) throw err;
-                });
+                    //if (err) throw err;
+                //});
 
                 //client.close();
 
@@ -213,14 +226,14 @@ io.sockets.on('connection',
         });
 
         socket.on('getUniqueUsernames', function(data) {
-            MongoClient.connect(uri, function (err, client) {
+            //MongoClient.connect(uri, function (err, client) {
 
                 //console.log("getting usernames")
                 //console.log(data);
 
-                if (err) throw err;
+                //if (err) throw err;
 
-                const coords = client.db('noaru').collection('coords');
+                //const coords = client.db('noaru').collection('coords');
 
                 coords.distinct('username', function(err, result) {
 
@@ -235,7 +248,7 @@ io.sockets.on('connection',
 
 
 
-            });
+            //});
         });
 
         socket.on('disconnect', function() {
