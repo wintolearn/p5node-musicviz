@@ -247,7 +247,9 @@ function draw() {
     if(mouseIsPressed === true) {
 
         if (mouseY < windowHeight * (drawingCutOff-0.025) && mouseY>windowHeight*0.1) {
-            sendmouse(mouseX, mouseY,unique_username);
+            if (unique_username !== '') {
+                sendmouse(mouseX, mouseY, unique_username);
+            }
             drawSpectrum(mouseX, mouseY);
         }
 
@@ -260,7 +262,9 @@ function draw() {
             for (var i = 0; i < touches.length; i++) {
 
                 if (touches[i].y < windowHeight * (drawingCutOff-0.025) && touches[i].y>windowHeight*0.1) {
-                    sendmouse(touches[i].x, touches[i].y,unique_username);
+                    if (unique_username !== '') {
+                        sendmouse(touches[i].x, touches[i].y, unique_username);
+                    }
                     drawSpectrum(touches[i].x, touches[i].y);
 
                     noStroke();
