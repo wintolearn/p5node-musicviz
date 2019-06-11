@@ -188,13 +188,21 @@ function setup() {
             spectrum = fft.analyze();
             //countCx+=1;
             //if(countCx%5===0) {
-            ampScaleSlider.value(data.ampScale);
-            offScaleSlider.value(data.xOffScale);
-            rSlider.value(data.rSlider);
-            gSlider.value(data.gSlider);
-            bSlider.value(data.bSlider);
-            rEllipseSlider.value(data.rEllipseFactor);
-                drawSpectrum(data.x, data.y);
+
+            //if(ampScale!==ampScaleSlider.value()||xOffScale !== offScaleSlider.value()||r !== rSlider.value()||g
+            // !== gSlider.value()||b !== bSlider.value()||rEllipseFactor !== rEllipseSlider.value())
+            //{
+
+                ampScaleSlider.value(data.ampScale);
+                offScaleSlider.value(data.xOffScale);
+                rSlider.value(data.rSlider);
+                gSlider.value(data.gSlider);
+                bSlider.value(data.bSlider);
+                rEllipseSlider.value(data.rEllipseFactor);
+            //}
+
+
+            drawSpectrum(data.x, data.y);
             //}
 
         }

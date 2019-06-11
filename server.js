@@ -71,8 +71,17 @@ function handleRequest(req, res) {
 }
 
 //var uri = 'mongodb://gameblocks:password@ds143608.mlab.com:43608/gameblocks';
-var uri = 'mongodb://noaru_user:noarupw1@ds135217.mlab.com:35217/noaru';
+var uri = 'mongodb://noaru_user:noarupw1@ds135217.mlab.com:35217/noaru?connectTimeoutMS=100000';
 //mongodb://<dbuser>:<dbpassword>@ds135217.mlab.com:35217/noaru
+
+var options = { server:
+        { socketOptions:
+                {
+                    //socketTimeoutMS: SOCKET_TIME_OUT_MS,
+                    connectTimeoutMS: 10000
+                }
+        }
+};
 
 // WebSocket Portion
 // WebSockets work with the HTTP server
@@ -133,6 +142,8 @@ io.sockets.on('connection',
                         if (err) throw err;
                     });
 
+                    //client.close();
+
 
                 });
 
@@ -163,21 +174,20 @@ io.sockets.on('connection',
 
                 coords.find({ username: data }).sort( { timestamp: 1 }).toArray(function(err, result) {
 
-                    var start_time = result[0].timestamp;
+                    //var start_time = result[0].timestamp;
 
                     //start at second record
                     for(var i=1;i<result.length;i+=1) {
                         //console.log(i);
 
-                        var end_time = result[i].timestamp;
+                        //var end_time = result[i].timestamp;
 
-                        var time_diff = end_time - start_time;
+                        var time_diff = result[i].timestamp - result[0].timestamp;
                         //console.log(time_diff);
-                        var x = result[i].x;
-                        var y = result[i].y;
+
                         var data = {
-                            x: x,
-                            y: y,
+                            x: result[i].x,
+                            y: result[i].y,
                             ampScale:result[i].ampScale,
                             xOffScale:result[i].xOffScale,
                             rSlider:result[i].rSlider,
@@ -197,7 +207,7 @@ io.sockets.on('connection',
                     if (err) throw err;
                 });
 
-
+                //client.close();
 
             });
         });
@@ -221,7 +231,7 @@ io.sockets.on('connection',
                     if (err) throw err;
                 });
 
-
+                //client.close();
 
 
 
