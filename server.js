@@ -71,7 +71,7 @@ function handleRequest(req, res) {
 }
 
 //var uri = 'mongodb://gameblocks:password@ds143608.mlab.com:43608/gameblocks';
-var uri = 'mongodb://noaru_user:noarupw1@ds135217.mlab.com:35217/noaru?connectTimeoutMS=100000';
+var uri = 'mongodb://noaru_user:noarupw1@ds135217.mlab.com:35217/noaru?connectTimeoutMS=300000';
 //mongodb://<dbuser>:<dbpassword>@ds135217.mlab.com:35217/noaru
 
 var options = { server:
