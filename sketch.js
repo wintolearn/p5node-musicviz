@@ -222,9 +222,41 @@ function setup() {
 
 function draw() {
     frames+=1;
-    if(frames%20===0) {
-        background(0, 0, 0, 15);
+    if(frames>0&&frames<3600) {
+        if (frames % 4 === 0) {
+            //console.log(frames);
+            //fill(0,0,0,1);
+            //rect(0,0,windowWidth,windowHeight);
+            background(0, 0, 0, 2);
+        }
     }
+    else if(frames>3600&&frames<7200) {
+        if (frames % 6 === 0) {
+            //console.log(frames);
+            //fill(0,0,0,1);
+            //rect(0,0,windowWidth,windowHeight);
+            background(0, 0, 0, 1.5);
+        }
+    }
+    else if(frames>7200&&frames<10800) {
+        if (frames % 7 === 0) {
+            //console.log(frames);
+            //fill(0,0,0,1);
+            //rect(0,0,windowWidth,windowHeight);
+            background(0, 0, 0, 1.25);
+        }
+    }
+    else if(frames>10800) {
+
+        if (frames % 8 === 0) {
+            //console.log(frames);
+            //fill(0,0,0,1);
+            //rect(0,0,windowWidth,windowHeight);
+            background(0, 0, 0, 1);
+        }
+    }
+
+
 
     /*
     if(ampScale!==ampScaleSlider.value()||xOffScale !== offScaleSlider.value()||r !== rSlider.value()||g !== gSlider.value()||b !== bSlider.value()){
