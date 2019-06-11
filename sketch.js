@@ -45,7 +45,13 @@ var b = 100;
 var sel;
 var frames=0;
 
+var playedOnce = false;
+
+var endingText = 'take a screenshot and post to instagram\n #comprehension_art     @noaru_band';
+
 var unique_username = '';
+
+var endingTextDarkness = 0;
 
 let input, submit_button;
 
@@ -62,6 +68,7 @@ function toggleSong() {
         song.pause();
     } else {
         song.play();
+        playedOnce=true;
         spectrum = fft.analyze();
     }
 
@@ -229,10 +236,10 @@ function setup() {
 }
 
 function draw() {
-    //frames+=1;
+    frames += 1;
 
-    /*
-    if(frames>0&&frames<3600) {
+
+    if (frames > 0 && frames < 3600) {
         if (frames % 4 === 0) {
             //console.log(frames);
             //fill(0,0,0,1);
@@ -240,7 +247,7 @@ function draw() {
             background(0, 0, 0, 2);
         }
     }
-    else if(frames>3600&&frames<7200) {
+    else if (frames > 3600 && frames < 7200) {
         if (frames % 6 === 0) {
             //console.log(frames);
             //fill(0,0,0,1);
@@ -248,7 +255,7 @@ function draw() {
             background(0, 0, 0, 1.5);
         }
     }
-    else if(frames>7200&&frames<10800) {
+    else if (frames > 7200 && frames < 10800) {
         if (frames % 7 === 0) {
             //console.log(frames);
             //fill(0,0,0,1);
@@ -256,7 +263,7 @@ function draw() {
             background(0, 0, 0, 1.25);
         }
     }
-    else if(frames>10800) {
+    else if (frames > 10800) {
 
         if (frames % 8 === 0) {
             //console.log(frames);
@@ -265,7 +272,22 @@ function draw() {
             background(0, 0, 0, 1);
         }
     }
-    */
+
+    if (playedOnce === true) {
+        if (song.isPlaying() === false) {
+            if(frames%20===0){
+                endingTextDarkness+=0.5;
+            }
+            fill(150-endingTextDarkness,150-endingTextDarkness,150-endingTextDarkness,30);
+            textSize(30);
+            strokeWeight(0);
+            endingText = 'screenshot and post to instagram\n #comprehension_art     @noaru_band';
+            text(endingText, windowWidth * 0.4, windowHeight * 0.65);
+        }
+        else {
+            endingText = '';
+        }
+    }
 
 
 
@@ -328,6 +350,7 @@ var randColorDiv = 1.5;
 
 function drawSpectrum(stX,stY) {
     //console.log(spectrum);
+    strokeWeight(5);
     if (spectrum !== undefined) {
         for (var i = 20; i < spectrum.length-40; i += stepSize) {
             angle = map(i, 20, spectrum.length-40, 0, 360);
