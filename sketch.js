@@ -275,10 +275,10 @@ function draw() {
 
     if (playedOnce === true) {
         if (song.isPlaying() === false) {
-            if(frames%20===0){
+            if(frames%15===0){
                 endingTextDarkness+=0.5;
             }
-            fill(150-endingTextDarkness,150-endingTextDarkness,150-endingTextDarkness,30);
+            fill(50-endingTextDarkness,50-endingTextDarkness,50-endingTextDarkness,30);
             textSize(20);
             strokeWeight(0);
             endingText = 'screenshot and post to instagram\n #comprehension_art     @noaru_band';
