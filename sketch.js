@@ -95,6 +95,8 @@ function greet(){
 
 function setup() {
 
+    //need to put all positions as relative to screen size
+
     button = createButton('/PLAY/');
     col = color(25,23,200,2);
     fontCol = color(255,255,255);
@@ -290,7 +292,10 @@ function draw() {
     }
 
 
-
+    fill(255);
+    textSize(20);
+    text(windowWidth, 100,100);
+    text(windowHeight, 100,150);
     /*
     if(ampScale!==ampScaleSlider.value()||xOffScale !== offScaleSlider.value()||r !== rSlider.value()||g !== gSlider.value()||b !== bSlider.value()){
         var data = {
