@@ -57,6 +57,8 @@ let input, submit_button;
 
 var igOpen = false;
 
+var igUser = '';
+
 
 
 function preload() {
@@ -90,6 +92,7 @@ function openIGandroid(){
 
 function toggleSong() {
 
+
     if (song.isPlaying()) {
         song.pause();
     } else {
@@ -97,6 +100,14 @@ function toggleSong() {
         playedOnce=true;
         spectrum = fft.analyze();
     }
+
+}
+
+function playOtherUser(){
+    socket.emit('getData',igUser);
+
+        startDraw();
+        button.hide();
 
 }
 
@@ -116,6 +127,12 @@ function mySelectEvent() {
 function greet(){
     unique_username = input.value();
     //button.show();
+    startDraw();
+
+    //console.log(unique_username);
+}
+
+function startDraw(){
     rEllipseSlider.show();
     ampScaleSlider.show();
     offScaleSlider.show();
@@ -124,11 +141,9 @@ function greet(){
     bSlider.show();
     submit_button.hide();
     input.hide();
+
     toggleSong();
 
-
-
-    //console.log(unique_username);
 }
 
 
@@ -250,7 +265,7 @@ function setup() {
     background(0);
     strokeWeight(5);
 
-    button.mousePressed(toggleSong);
+    button.mousePressed(playOtherUser);
     //button_get.mousePressed(getData);
 
     angleMode(DEGREES);
@@ -267,6 +282,20 @@ function setup() {
     socket.emit('getUniqueUsernames','getUniqueUsernames');
     // We make a named event called 'mouse' and write an
     // anonymous callback function
+    socket.on('run_user',
+        function(data) {
+            igUser = data;
+
+            submit_button.hide();
+            input.hide();
+            button.show();
+
+
+
+        }
+    );
+
+
     socket.on('mouse',
         // When we receive data
         function(data) {

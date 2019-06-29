@@ -23,6 +23,8 @@ var mongodb = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
 const test = require('assert');
 
+var requestInfo ='';
+
 server.listen(port, hostname, function(){
     //console.log('listening on ' + hostname + ':' + port);
 });
@@ -33,13 +35,59 @@ server.listen(port, hostname, function(){
 console.log('Server started on port ' + port);
 
 function handleRequest(req, res) {
+
     // What did we request?
     var pathname = req.url;
+    console.log(pathname);
+
+
+/*
+    if (searchInfo != null) {
+        //pathname = '/index.html';
+        requestInfo = searchInfo.substr(1);;
+        //pathname = '/index.html';
+        console.log(requestInfo);
+    }
+
+ */
+
 
     // If blank let's ask for index.html
     if (pathname == '/') {
         pathname = '/index.html';
     }
+
+    var pathName = url.parse(req.url, true).pathname;
+
+    if (pathName == '/getuser') {
+        pathname = '/index.html';
+        var searchInfo = url.parse(req.url, true).search;
+        requestInfo = searchInfo.substr(1);
+
+    }
+
+
+
+
+
+
+
+
+    //if (pathname == '/oliver') {
+    //    pathname = '/index.html';
+    //}
+
+
+
+
+    //else{
+    //    pathname = '/index.html';
+    //    console.log('different path name');
+    //}
+
+
+
+
 
     // Ok what's our file extension
     var ext = path.extname(pathname);
@@ -53,6 +101,8 @@ function handleRequest(req, res) {
 
     // What is it?  Default to plain text
     var contentType = typeExt[ext] || 'text/plain';
+
+
 
     // User file system module
     fs.readFile(__dirname + pathname,
@@ -110,6 +160,11 @@ io.sockets.on('connection',
                 //only send to client
                 socket.emit('mouse', data);
             }, time_diff);
+        }
+
+
+        if (requestInfo !=''){
+            socket.emit('run_user',requestInfo);
         }
 
         //console.log("We have a new client: " + socket.id);
