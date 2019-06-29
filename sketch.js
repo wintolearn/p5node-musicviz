@@ -468,7 +468,7 @@ function draw() {
         if (touches.length > 0) {
             for (var i = 0; i < touches.length; i++) {
 
-                if (touches[i].y < windowHeight * (drawingCutOff-0.025) && touches[i].y>windowHeight*0.1) {
+                if (touches[i].y < windowHeight * (drawingCutOff-0.025) && touches[i].y>windowHeight*0.1 && allowDraw === true) {
                     if (unique_username !== '') {
                         sendmouse(touches[i].x, touches[i].y, unique_username);
                     }
