@@ -53,11 +53,13 @@ var unique_username = '';
 
 var endingTextDarkness = 0;
 
-let input, submit_button;
+var inp, submit_button;
 
 var igOpen = false;
 
 var igUser = '';
+
+var allowDraw = false;
 
 
 
@@ -125,7 +127,7 @@ function mySelectEvent() {
 }
 
 function greet(){
-    unique_username = input.value();
+    unique_username = inp.value();
     //button.show();
     startDraw();
 
@@ -133,6 +135,7 @@ function greet(){
 }
 
 function startDraw(){
+    allowDraw = true;
     rEllipseSlider.show();
     ampScaleSlider.show();
     offScaleSlider.show();
@@ -140,7 +143,7 @@ function startDraw(){
     gSlider.show();
     bSlider.show();
     submit_button.hide();
-    input.hide();
+    inp.hide();
 
     toggleSong();
 
@@ -228,18 +231,22 @@ function setup() {
 
 
 
-    input = createInput();
+    //inp = createInput();
+    inp = createInput('').attribute('placeholder', 'enter instagram name');
     //input.position(windowWidth*0.5, windowHeight*0.45);
 
 
-    input.value('enter instagram name');
-    input.style('font-size', '20px');
+    //input.value('enter instagram name');
+    //inp.value('');
+    //console.log(input);
+    //inp.attribute('placeholder,'enter_instagram_name');
+    inp.style('font-size', '20px');
     //input.style('position', 'absolute');
     //input.style('top', '50%');
 
-    input.style('display', 'table');
-    input.style('margin', '0 auto');
-    input.style('margin-top', '50%');
+    inp.style('display', 'table');
+    inp.style('margin', '0 auto');
+    inp.style('margin-top', '50%');
     //input.style('text-align', 'center');
 
     submit_button = createButton('then click here to draw :)');
@@ -287,7 +294,7 @@ function setup() {
             igUser = data;
 
             submit_button.hide();
-            input.hide();
+            inp.hide();
             button.show();
 
 
@@ -446,7 +453,7 @@ function draw() {
 
     if(mouseIsPressed === true) {
 
-        if (mouseY < windowHeight * (drawingCutOff-0.025) && mouseY>windowHeight*0.1) {
+        if (mouseY < windowHeight * (drawingCutOff-0.025) && mouseY>windowHeight*0.1 && allowDraw === true) {
             if (unique_username !== '') {
                 sendmouse(mouseX, mouseY, unique_username);
             }
