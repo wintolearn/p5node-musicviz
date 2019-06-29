@@ -8,6 +8,10 @@ var http = require('http');
 var url = require('url');
 var path = require('path');
 
+//var nStatic = require('node-static');
+
+//var fileServer = new nStatic.Server('./screenshots');
+
 // Using the filesystem module
 var fs = require('fs');
 
@@ -24,6 +28,8 @@ const MongoClient = require('mongodb').MongoClient;
 const test = require('assert');
 
 var requestInfo ='';
+
+var imageName = '';
 
 server.listen(port, hostname, function(){
     //console.log('listening on ' + hostname + ':' + port);
@@ -66,6 +72,16 @@ function handleRequest(req, res) {
 
     }
 
+    /*
+
+    if (pathName == '/getimage') {
+        pathname = '/index.html';
+        imageName = url.parse(req.url, true).search;
+        imageName = imageName.substr(1);
+        fileServer.serve(req, res);
+
+    }
+    */
 
 
 

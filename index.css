@@ -10,7 +10,11 @@ button {
 body{
     overscroll-behavior-y: contain;
     overflow-x: hidden;
-    position: relative;
+    //position: relative;
+
+    position: fixed;
+    overflow: hidden;
+
     background:black;
     color:white;
     font-family: "Arial";
