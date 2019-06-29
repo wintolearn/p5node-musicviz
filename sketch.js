@@ -55,10 +55,22 @@ var endingTextDarkness = 0;
 
 let input, submit_button;
 
+var igOpen = false;
+
 
 
 function preload() {
     song = loadSound('./comprehension.mp3');
+
+}
+
+function openIGapple(){
+    if(igOpen === false) {
+        igOpen = true;
+        setTimeout(function () {
+            window.open("instagram://user?username=NOARUband");
+        }, 2000);
+    }
 
 }
 
@@ -89,6 +101,19 @@ function mySelectEvent() {
 
 function greet(){
     unique_username = input.value();
+    //button.show();
+    rEllipseSlider.show();
+    ampScaleSlider.show();
+    offScaleSlider.show();
+    rSlider.show();
+    gSlider.show();
+    bSlider.show();
+    submit_button.hide();
+    input.hide();
+    toggleSong();
+
+
+
     //console.log(unique_username);
 }
 
@@ -103,7 +128,11 @@ function setup() {
     button.style('font-size', '30px');
     button.style('background-color', col);
     button.style('color', fontCol);
-    button.position(10, 10);
+    //button.position(10, 10);
+    var buttonX = windowWidth*0.03;
+    var buttonY = windowHeight*0.02
+    button.position(buttonX, buttonY);
+    button.hide();
 
     /*
     button_get = createButton('/GET/');
@@ -115,50 +144,85 @@ function setup() {
 
     //slider min Value, max Value, starting Value, step size
     rEllipseSlider = createSlider(0, 2, 0,0.1);
-    rEllipseSlider.position(20, windowHeight*0.70);
-    rEllipseSlider.style('width', windowWidth*0.7+'px');
+    rEllipseSlider.hide();
+    //rEllipseSlider.position(20, windowHeight*0.70);
+    var sliderYpct = 0.7;
+    rEllipseSlider.position(buttonX*2, windowHeight*sliderYpct);
+    //rEllipseSlider.style('width', windowWidth*0.7+'px');
+    var sliderStyle = windowWidth*sliderYpct+'px';
+    rEllipseSlider.style('width', sliderStyle);
 
     ampScaleSlider = createSlider(0.5, 3, 1,0.1);
-    ampScaleSlider.position(20, windowHeight*0.75);
-    ampScaleSlider.style('width', windowWidth*0.7+'px');
+    ampScaleSlider.hide();
+    ampScaleSlider.position(buttonX*2, windowHeight*(sliderYpct+0.05));
+    ampScaleSlider.style('width', sliderStyle);
 
     offScaleSlider = createSlider(0, 2, 0,0.1);
-    offScaleSlider.position(20, windowHeight*0.8);
-    offScaleSlider.style('width', windowWidth*0.7+'px');
+    offScaleSlider.hide();
+    offScaleSlider.position(buttonX*2, windowHeight*(sliderYpct+0.1));
+    offScaleSlider.style('width', sliderStyle);
 
     rSlider = createSlider(0, 255, 100,1);
-    rSlider.position(20, windowHeight*0.85);
-    rSlider.style('width', windowWidth*0.7+'px');
+    rSlider.hide();
+    rSlider.position(buttonX*2, windowHeight*(sliderYpct+0.15));
+    rSlider.style('width', sliderStyle);
 
     gSlider = createSlider(0, 255, 100,1);
-    gSlider.position(20, windowHeight*0.9);
-    gSlider.style('width', windowWidth*0.7+'px');
+    gSlider.hide();
+    gSlider.position(buttonX*2, windowHeight*(sliderYpct+0.2));
+    gSlider.style('width', sliderStyle);
 
     bSlider = createSlider(0, 255, 100,1);
-    bSlider.position(20, windowHeight*0.95);
-    bSlider.style('width', windowWidth*0.7+'px');
+    bSlider.hide();
+    bSlider.position(buttonX*2, windowHeight*(sliderYpct+0.25));
+    bSlider.style('width', sliderStyle);
 
     sel = createSelect();
 
-    sel.style('font-size', '20px');
+
+    sel.style('font-size', '30px');
     sel.style('background-color', col);
     sel.style('color', fontCol);
 
-    sel.position(windowWidth*0.25+50, windowHeight*0.05);
+    //sel.position(buttonX*8, buttonY);
     sel.option('see other drawings');
     sel.changed(mySelectEvent);
+    sel.style('width', windowWidth*0.4+'px');
+    sel.style('display', 'table');
+    sel.style('margin', '0 auto');
+
+    //sel.style('display', 'table');
+    //sel.style('margin-left', 'auto');
+    //sel.style('margin-right', 'auto');
+    sel.style('margin-top', '0%');
+    sel.hide();
+
+
 
     input = createInput();
-    input.position(windowWidth*0.45+50, 10);
+    //input.position(windowWidth*0.5, windowHeight*0.45);
+
 
     input.value('enter instagram name');
+    input.style('font-size', '20px');
+    //input.style('position', 'absolute');
+    //input.style('top', '50%');
 
-    submit_button = createButton('submit');
-    submit_button.position(windowWidth*0.25+50, 10);
+    input.style('display', 'table');
+    input.style('margin', '0 auto');
+    input.style('margin-top', '50%');
+    //input.style('text-align', 'center');
+
+    submit_button = createButton('then click here to draw :)');
+    //submit_button.position(windowWidth*0.5, windowHeight*0.55);
     submit_button.mousePressed(greet);
 
+    submit_button.style('display', 'table');
+    submit_button.style('margin', '0 auto');
+    submit_button.style('margin-top', '5%');
+
     submit_button.style('font-size', '20px');
-    submit_button.style('size', '20px');
+    //submit_button.style('size', '20px');
     submit_button.style('background-color', col);
     submit_button.style('color', fontCol);
 
@@ -280,11 +344,30 @@ function draw() {
             if(frames%15===0){
                 endingTextDarkness+=0.5;
             }
+
             fill(50-endingTextDarkness,50-endingTextDarkness,50-endingTextDarkness,30);
             textSize(20);
             strokeWeight(0);
-            endingText = 'screenshot and post to instagram\n #comprehension_art     @noaru_band';
-            text(endingText, windowWidth * 0.4, windowHeight * 0.65);
+            endingText = 'your drawing will be posted soon to\n #comprehension_art     @noaru_band';
+
+
+            text(endingText, windowWidth * 0.4, windowHeight * 0.6);
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                if( /Android/i.test(navigator.userAgent) ) {
+                    // some code..
+                }
+                if( /iPhone|iPad/i.test(navigator.userAgent) ) {
+                    openIGapple();
+                }
+            }
+
+
+            //var bandLink = createA('https://www.instagram.com/NOARUband/', 'your drawing will be posted here soon');
+            //bandLink.position(200,200);
+
+
+
+            sel.show();
         }
         else {
             endingText = '';
@@ -292,10 +375,11 @@ function draw() {
     }
 
 
-    fill(255);
-    textSize(20);
-    text(windowWidth, 100,100);
-    text(windowHeight, 100,150);
+    //fill(255);
+    //textSize(20);
+    //text(windowWidth, 100,100);
+    //text(windowHeight, 100,150);
+
     /*
     if(ampScale!==ampScaleSlider.value()||xOffScale !== offScaleSlider.value()||r !== rSlider.value()||g !== gSlider.value()||b !== bSlider.value()){
         var data = {
