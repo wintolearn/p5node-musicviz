@@ -74,6 +74,20 @@ function openIGapple(){
 
 }
 
+
+
+function openIGandroid(){
+    if(igOpen === false) {
+        igOpen = true;
+        setTimeout(function () {
+            window.open("intent://instagram.com/_u/noaruband/#Intent;package=com.instagram.android;scheme=https;end");
+        }, 2000);
+    }
+
+}
+
+
+
 function toggleSong() {
 
     if (song.isPlaying()) {
@@ -354,7 +368,7 @@ function draw() {
             text(endingText, windowWidth * 0.4, windowHeight * 0.6);
             if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
                 if( /Android/i.test(navigator.userAgent) ) {
-                    // some code..
+                    openIGandroid();
                 }
                 if( /iPhone|iPad/i.test(navigator.userAgent) ) {
                     openIGapple();
