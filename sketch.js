@@ -368,10 +368,10 @@ function draw() {
             text(endingText, windowWidth * 0.4, windowHeight * 0.6);
             if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
                 if( /Android/i.test(navigator.userAgent) ) {
-                    openIGandroid();
+                    //openIGandroid();
                 }
                 if( /iPhone|iPad/i.test(navigator.userAgent) ) {
-                    openIGapple();
+                    //openIGapple();
                 }
             }
 
@@ -379,9 +379,7 @@ function draw() {
             //var bandLink = createA('https://www.instagram.com/NOARUband/', 'your drawing will be posted here soon');
             //bandLink.position(200,200);
 
-
-
-            sel.show();
+            //sel.show();
         }
         else {
             endingText = '';

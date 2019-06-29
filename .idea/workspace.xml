@@ -61,8 +61,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sketch.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="85" />
+            <state relative-caret-position="271">
+              <caret line="380" lean-forward="true" selection-start-line="380" selection-end-line="380" />
             </state>
           </provider>
         </entry>
@@ -252,23 +252,23 @@
       <workItem from="1551061201034" duration="7747000" />
       <workItem from="1559997885061" duration="6182000" />
       <workItem from="1560029940189" duration="14952000" />
-      <workItem from="1561748126445" duration="10028000" />
+      <workItem from="1561748126445" duration="10269000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="107888000" />
+    <option name="totallyTimeSpent" value="108129000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="111" y="71" width="1091" height="690" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1542056" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1542056" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.110367894" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.110367894" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -377,8 +377,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sketch.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="85" lean-forward="true" selection-start-line="85" selection-end-line="85" />
+        <state relative-caret-position="271">
+          <caret line="380" lean-forward="true" selection-start-line="380" selection-end-line="380" />
         </state>
       </provider>
     </entry>
