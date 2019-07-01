@@ -55,6 +55,8 @@ var endingTextDarkness = 0;
 
 var inp, submit_button;
 
+var introP;
+
 var igOpen = false;
 
 var igUser = '';
@@ -144,6 +146,7 @@ function startDraw(){
     bSlider.show();
     submit_button.hide();
     inp.hide();
+    introP.hide();
 
     toggleSong();
 
@@ -230,26 +233,32 @@ function setup() {
     sel.hide();
 
 
+    introP = createP('welcome to the noaru game portal');
+    introP.style('font-size', '20px');
+    //input.style('position', 'absolute');
+    //input.style('top', '50%');
 
+    introP.style('display', 'table');
+    introP.style('margin', '0 auto');
+    introP.style('margin-top', '50%');
     //inp = createInput();
     inp = createInput('').attribute('placeholder', 'enter instagram name');
     //input.position(windowWidth*0.5, windowHeight*0.45);
 
-
-    //input.value('enter instagram name');
-    //inp.value('');
-    //console.log(input);
-    //inp.attribute('placeholder,'enter_instagram_name');
     inp.style('font-size', '20px');
+    inp.style('text-align', 'center');
+
+
+
     //input.style('position', 'absolute');
     //input.style('top', '50%');
 
     inp.style('display', 'table');
     inp.style('margin', '0 auto');
-    inp.style('margin-top', '50%');
+    inp.style('margin-top', '5%');
     //input.style('text-align', 'center');
 
-    submit_button = createButton('then click here to draw :)');
+    submit_button = createButton('then click here to draw');
     //submit_button.position(windowWidth*0.5, windowHeight*0.55);
     submit_button.mousePressed(greet);
 
@@ -295,6 +304,7 @@ function setup() {
 
             submit_button.hide();
             inp.hide();
+            introP.hide();
             button.show();
 
 
@@ -423,10 +433,6 @@ function draw() {
     }
 
 
-    //fill(255);
-    //textSize(20);
-    //text(windowWidth, 100,100);
-    //text(windowHeight, 100,150);
 
     /*
     if(ampScale!==ampScaleSlider.value()||xOffScale !== offScaleSlider.value()||r !== rSlider.value()||g !== gSlider.value()||b !== bSlider.value()){

@@ -7,6 +7,29 @@ button {
     user-select: none;
 }
 
+
+p {
+    animation-duration: 1500ms;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+
+}
+@keyframes blink {
+    0%   {color: red;}
+    25%  {color: yellow;}
+    50%  {color: blue;}
+    75%  {color: green;}
+    100% {color: red;}
+
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
 body{
     overscroll-behavior-y: contain;
     overflow-x: hidden;
