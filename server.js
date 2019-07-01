@@ -44,7 +44,7 @@ function handleRequest(req, res) {
 
     // What did we request?
     var pathname = req.url;
-    console.log(pathname);
+    //console.log(pathname);
 
 
 /*
@@ -199,6 +199,9 @@ io.sockets.on('connection',
                 var gSlider=data.gSlider;
                 var bSlider=data.bSlider;
                 var rEllipseFactor=data.rEllipseFactor;
+
+
+
 
 
 

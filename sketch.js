@@ -64,6 +64,8 @@ var igUser = '';
 
 var allowDraw = false;
 
+var p5canvas;
+
 
 
 function preload() {
@@ -138,6 +140,15 @@ function greet(){
 }
 
 function startDraw(){
+    var p5body = select('body');
+    var p5canvas2 = select('canvas');
+    console.log('the body: ' + p5body)
+    p5canvas2.elt.addEventListener('touchstart', function(e){ e.preventDefault(); });
+    p5canvas2.elt.addEventListener('touchend', function(e){ e.preventDefault(); });
+    p5canvas2.elt.addEventListener('touchmove', function(e){ e.preventDefault(); });
+    p5canvas2.elt.addEventListener('touchcancel', function(e){ e.preventDefault(); });
+    p5canvas2.elt.addEventListener('mousedown', function(e){ e.preventDefault(); });
+    p5canvas2.elt.addEventListener('mousemove', function(e){ e.preventDefault(); });
     allowDraw = true;
     rEllipseSlider.show();
     ampScaleSlider.show();
@@ -181,6 +192,12 @@ function setup() {
 
     //slider min Value, max Value, starting Value, step size
     rEllipseSlider = createSlider(0, 2, 0,0.1);
+    rEllipseSlider.id('redslider');
+    //document.getElementById('redslider').fill = 'red';
+    //var p5slider = select('slider');
+    //rEllipseSlider.elt.style.fill="green !important";
+
+
     rEllipseSlider.hide();
     //rEllipseSlider.position(20, windowHeight*0.70);
     var sliderYpct = 0.7;
@@ -199,17 +216,47 @@ function setup() {
     offScaleSlider.position(buttonX*2, windowHeight*(sliderYpct+0.1));
     offScaleSlider.style('width', sliderStyle);
 
+
+
     rSlider = createSlider(0, 255, 100,1);
+
+    var sliderColR = color(255,0,0);
+
+    rSlider.style('fill', sliderColR);
+    rSlider.style('stroke', sliderColR);
+    rSlider.style('background-color', sliderColR);
+    rSlider.style('outline', sliderColR);
+    rSlider.style('-webkit-appearance', 'none');
+
     rSlider.hide();
     rSlider.position(buttonX*2, windowHeight*(sliderYpct+0.15));
     rSlider.style('width', sliderStyle);
 
     gSlider = createSlider(0, 255, 100,1);
+
+    var sliderColG = color(0,255,0);
+
+    gSlider.style('fill', sliderColG);
+    gSlider.style('stroke', sliderColG);
+    gSlider.style('background-color', sliderColG);
+    gSlider.style('outline', sliderColG);
+    gSlider.style('-webkit-appearance', 'none');
+
     gSlider.hide();
     gSlider.position(buttonX*2, windowHeight*(sliderYpct+0.2));
     gSlider.style('width', sliderStyle);
 
     bSlider = createSlider(0, 255, 100,1);
+
+    var sliderColB = color(0,0,255);
+
+    bSlider.style('fill', sliderColB);
+    bSlider.style('stroke', sliderColB);
+    bSlider.style('background-color', sliderColB);
+    bSlider.style('outline', sliderColB);
+    bSlider.style('-webkit-appearance', 'none');
+
+
     bSlider.hide();
     bSlider.position(buttonX*2, windowHeight*(sliderYpct+0.25));
     bSlider.style('width', sliderStyle);
@@ -291,7 +338,7 @@ function setup() {
     textAlign(CENTER);
 
 
-    createCanvas(windowWidth*0.95, windowHeight*0.9);
+    var p5canvas = createCanvas(windowWidth*0.95, windowHeight*0.9);
     background(0);
     strokeWeight(5);
 
@@ -493,7 +540,10 @@ function draw() {
                     if (unique_username !== '') {
                         sendmouse(touches[i].x, touches[i].y, unique_username);
                     }
+
                     drawSpectrum(touches[i].x, touches[i].y);
+
+
 
                     noStroke();
                 }

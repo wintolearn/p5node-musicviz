@@ -33,6 +33,7 @@ p {
 
 
 body{
+    margin: 0;
     overscroll-behavior-y: contain;
     overflow-x: hidden;
     //position: relative;
@@ -41,7 +42,7 @@ body{
     overflow: hidden;
 
     background:black;
-    color:white;
+    /*color:white;*/
     font-family: "Arial";
     font-size: 30px;
     text-transform: uppercase;
