@@ -9,18 +9,18 @@ button {
 
 
 p {
-    animation-duration: 1500ms;
+    animation-duration: 3000ms;
     animation-name: blink;
     animation-iteration-count: infinite;
     animation-direction: alternate;
 
 }
 @keyframes blink {
-    0%   {color: red;}
-    25%  {color: yellow;}
-    50%  {color: blue;}
-    75%  {color: green;}
-    100% {color: red;}
+    0%   {color: lightsalmon;}
+    25%  {color: lightyellow;}
+    50%  {color: lightskyblue;}
+    75%  {color: lightgreen;}
+    100% {color: lightpink;}
 
     from {
         opacity: 1;
@@ -29,6 +29,8 @@ p {
         opacity: 0;
     }
 }
+
+
 
 body{
     overscroll-behavior-y: contain;

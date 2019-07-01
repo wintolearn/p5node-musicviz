@@ -55,7 +55,8 @@ var endingTextDarkness = 0;
 
 var inp, submit_button;
 
-var introP;
+var introP1;
+var introP2;
 
 var igOpen = false;
 
@@ -146,7 +147,8 @@ function startDraw(){
     bSlider.show();
     submit_button.hide();
     inp.hide();
-    introP.hide();
+    introP1.hide();
+    introP2.hide();
 
     toggleSong();
 
@@ -233,14 +235,26 @@ function setup() {
     sel.hide();
 
 
-    introP = createP('welcome to the noaru game portal');
-    introP.style('font-size', '20px');
+    introP1 = createP('_|welcome_to_noaru|_');
+    introP1.style('font-size', '20px');
     //input.style('position', 'absolute');
     //input.style('top', '50%');
 
-    introP.style('display', 'table');
-    introP.style('margin', '0 auto');
-    introP.style('margin-top', '50%');
+    introP1.style('display', 'table');
+    introP1.style('margin', '0 auto');
+    introP1.style('margin-top', '50%');
+    //introP1.style('text-transform', 'lowercase');
+
+
+    introP2 = createP('_|game_portal|_');
+    introP2.style('font-size', '20px');
+    //input.style('position', 'absolute');
+    //input.style('top', '50%');
+
+    introP2.style('display', 'table');
+    introP2.style('margin', '0 auto');
+    introP2.style('margin-top', '1%');
+    //introP2.style('text-transform', 'lowercase');
     //inp = createInput();
     inp = createInput('').attribute('placeholder', 'enter instagram name');
     //input.position(windowWidth*0.5, windowHeight*0.45);
@@ -304,7 +318,8 @@ function setup() {
 
             submit_button.hide();
             inp.hide();
-            introP.hide();
+            introP1.hide();
+            introP2.hide();
             button.show();
 
 
