@@ -375,6 +375,9 @@ function setup() {
             introP2.hide();
             button.show();
 
+            //starting animation right away
+            playOtherUser();
+
 
 
         }
