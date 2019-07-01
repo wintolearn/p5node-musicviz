@@ -376,7 +376,7 @@ function setup() {
             button.show();
 
             //starting animation right away
-            playOtherUser();
+            //playOtherUser();
 
 
 
