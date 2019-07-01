@@ -222,15 +222,21 @@ function setup() {
 
     var sliderColR = color(255,0,0);
 
+    var sliderOutline = color(255,255,255);
     rSlider.style('fill', sliderColR);
     rSlider.style('stroke', sliderColR);
     rSlider.style('background-color', sliderColR);
     rSlider.style('outline', sliderColR);
     rSlider.style('-webkit-appearance', 'none');
 
+
+
     rSlider.hide();
     rSlider.position(buttonX*2, windowHeight*(sliderYpct+0.15));
     rSlider.style('width', sliderStyle);
+    //rSlider.style('height', '40px');
+
+    console.log(rSlider);
 
     gSlider = createSlider(0, 255, 100,1);
 
