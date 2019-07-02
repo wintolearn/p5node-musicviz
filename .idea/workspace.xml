@@ -62,7 +62,7 @@
         <entry file="file://$PROJECT_DIR$/sketch.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="295">
-              <caret line="378" column="28" lean-forward="true" selection-start-line="378" selection-start-column="28" selection-end-line="378" selection-end-column="28" />
+              <caret line="378" column="12" selection-start-line="378" selection-start-column="12" selection-end-line="378" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -256,12 +256,12 @@
       <workItem from="1551061201034" duration="7747000" />
       <workItem from="1559997885061" duration="6182000" />
       <workItem from="1560029940189" duration="14952000" />
-      <workItem from="1561748126445" duration="61831000" />
+      <workItem from="1561748126445" duration="63079000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="159691000" />
+    <option name="totallyTimeSpent" value="160939000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-38" y="30" width="1208" height="785" extended-state="0" />
@@ -378,7 +378,7 @@
     <entry file="file://$PROJECT_DIR$/sketch.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="295">
-          <caret line="378" column="28" lean-forward="true" selection-start-line="378" selection-start-column="28" selection-end-line="378" selection-end-column="28" />
+          <caret line="378" column="12" selection-start-line="378" selection-start-column="12" selection-end-line="378" selection-end-column="12" />
         </state>
       </provider>
     </entry>
