@@ -432,9 +432,10 @@ function draw() {
             fill(50-endingTextDarkness,50-endingTextDarkness,50-endingTextDarkness,30);
             textSize(20);
             strokeWeight(0);
-            endingText = 'your drawing will be posted soon to\n #comprehension_art     @noaru_band';
-
-            text(endingText, windowWidth * 0.4, windowHeight * 0.6);
+            if(runAllUsers===false) {
+                endingText = 'your drawing will be posted soon to\n #comprehension_art     @noaru_band';
+                text(endingText, windowWidth * 0.4, windowHeight * 0.6);
+            }
             if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
                 if( /Android/i.test(navigator.userAgent) ) {
                     //openIGandroid();
@@ -450,12 +451,14 @@ function draw() {
         }
     }
 
-    textSize(50);
+    textSize(40);
     //fill(0);
     //rect(windowWidth/4,100,200,50);
-    fill(random(255),random(255),random(255));
-    text('@'+currentUserName,windowWidth/4,100);
-    //console.log(currentUserName);
+    if(runAllUsers===true) {
+        fill(random(255), random(255), random(255));
+        text('@' + currentUserName, windowWidth *0.25, windowHeight*0.05);
+        //console.log(currentUserName);
+    }
 
 
     ampScale = ampScaleSlider.value();
