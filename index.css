@@ -7,25 +7,16 @@ button {
     user-select: none;
 }
 
-
 p {
     animation-duration: 3000ms;
     animation-name: blink;
     animation-iteration-count: infinite;
     animation-direction: alternate;
-
 }
 
-/*
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 20px;
-}
- */
 
 input[type=range]{
-    user-select: none;1
-
+    user-select: none;
 }
 
 input[type=range]::-webkit-slider-thumb {
@@ -35,11 +26,8 @@ input[type=range]::-webkit-slider-thumb {
     fill:white;
     height: 25px;
     width: 25px;
-
-
     cursor: pointer;
     margin-top: 0px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-
 }
 
 @keyframes blink {
@@ -58,16 +46,13 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 
-
 body{
     margin: 0;
     overscroll-behavior-y: contain;
     overflow-x: hidden;
-    //position: relative;
-
+    /*position: relative;*/
     position: fixed;
     overflow: hidden;
-
     background:black;
     color:white;
     font-family: "Arial";
@@ -78,7 +63,5 @@ body{
     -ms-user-select: none; /* Internet Explorer */
     -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
     -webkit-user-select: none; /* Chrome, Safari, and Opera */
-    -webkit-touch-callout: none; /* Disable Android and iOS
-
-
+    -webkit-touch-callout: none; /* Disable Android and iOS*/
 }

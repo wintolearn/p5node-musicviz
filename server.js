@@ -1,42 +1,31 @@
 // Based off of Shawn Van Every's Live Web
 // http://itp.nyu.edu/~sve204/liveweb_fall2013/week3.html
 
-
 // HTTP Portion
 var http = require('http');
 // URL module
 var url = require('url');
 var path = require('path');
 
-//var nStatic = require('node-static');
-
-//var fileServer = new nStatic.Server('./screenshots');
-
 // Using the filesystem module
 var fs = require('fs');
-
 var hostname = '0.0.0.0';
 //var hostname = '192.168.0.19';
 
-
 var port = process.env.PORT || 3000;
-
 var server = http.createServer(handleRequest);
-
 var mongodb = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
 const test = require('assert');
-
 var requestInfo ='';
-
+var getAllUsersReq = false;
 var imageName = '';
+var userNames;
+var speedFactor = 1;
 
 server.listen(port, hostname, function(){
     //console.log('listening on ' + hostname + ':' + port);
 });
-
-
-//server.listen(8080);
 
 console.log('Server started on port ' + port);
 
@@ -44,19 +33,6 @@ function handleRequest(req, res) {
 
     // What did we request?
     var pathname = req.url;
-    //console.log(pathname);
-
-
-/*
-    if (searchInfo != null) {
-        //pathname = '/index.html';
-        requestInfo = searchInfo.substr(1);;
-        //pathname = '/index.html';
-        console.log(requestInfo);
-    }
-
- */
-
 
     // If blank let's ask for index.html
     if (pathname == '/') {
@@ -69,41 +45,15 @@ function handleRequest(req, res) {
         pathname = '/index.html';
         var searchInfo = url.parse(req.url, true).search;
         requestInfo = searchInfo.substr(1);
-
     }
 
-    /*
-
-    if (pathName == '/getimage') {
+    if (pathName == '/getall') {
         pathname = '/index.html';
-        imageName = url.parse(req.url, true).search;
-        imageName = imageName.substr(1);
-        fileServer.serve(req, res);
+        getAllUsersReq = true;
 
+        var speedFactorInfo = url.parse(req.url, true).search;
+        speedFactor = speedFactorInfo.substr(1);
     }
-    */
-
-
-
-
-
-
-
-    //if (pathname == '/oliver') {
-    //    pathname = '/index.html';
-    //}
-
-
-
-
-    //else{
-    //    pathname = '/index.html';
-    //    console.log('different path name');
-    //}
-
-
-
-
 
     // Ok what's our file extension
     var ext = path.extname(pathname);
@@ -117,8 +67,6 @@ function handleRequest(req, res) {
 
     // What is it?  Default to plain text
     var contentType = typeExt[ext] || 'text/plain';
-
-
 
     // User file system module
     fs.readFile(__dirname + pathname,
@@ -136,9 +84,7 @@ function handleRequest(req, res) {
     );
 }
 
-//var uri = 'mongodb://gameblocks:password@ds143608.mlab.com:43608/gameblocks';
 var uri = 'mongodb://noaru_user:noarupw1@ds135217.mlab.com:35217/noaru?connectTimeoutMS=300000';
-//mongodb://<dbuser>:<dbpassword>@ds135217.mlab.com:35217/noaru
 
 var coords;
 
@@ -159,8 +105,6 @@ var options = { server:
         }
 };
 
-
-
 // WebSocket Portion
 // WebSockets work with the HTTP server
 var io = require('socket.io').listen(server);
@@ -178,13 +122,11 @@ io.sockets.on('connection',
             }, time_diff);
         }
 
-
         if (requestInfo !=''){
             socket.emit('run_user',requestInfo);
         }
 
         //console.log("We have a new client: " + socket.id);
-
         // When this user emits, client side: socket.emit('otherevent',some data);
         socket.on('mouse',
             function(data) {
@@ -200,22 +142,6 @@ io.sockets.on('connection',
                 var bSlider=data.bSlider;
                 var rEllipseFactor=data.rEllipseFactor;
 
-
-
-
-
-
-                //MongoClient.connect(uri, function (err, client) {
-
-                    //console.log("adding x and y to database");
-                    //console.log(unique_username);
-
-                    //if (err) throw err;
-
-                    //const coords = client.db('noaru').collection('coords');
-
-                    //var coords = client.db.collection('coords');
-
                     coords.insertOne({username: unique_username,unique_id: unique_id,timestamp: Date.now(),x: x,y: y,ampScale:ampScale,
                         xOffScale:xOffScale,
                         rSlider:rSlider,
@@ -227,51 +153,16 @@ io.sockets.on('connection',
 
                         if (err) throw err;
                     });
-
-                    //client.close();
-
-
-                //});
-
-
-                //console.log('done adding to db' + data);
-                // Data comes in as whatever was sent, including objects
-                //console.log("Received: 'mouse' " + data.x + " " + data.y);
-
-                // No need with this version to send to all clients
-
-                //socket.broadcast.emit('mouse', data);
-
-                // This is a way to send to everyone including sender
-                // io.sockets.emit('message', "this goes to everyone");
-
             }
         );
 
         socket.on('getData', function(data) {
 
-            //MongoClient.connect(uri, function (err, client) {
-
-                //console.log("retrieving data")
-                //console.log(data);
-
-                //if (err) throw err;
-
-                //const coords = client.db('noaru').collection('coords');
-
                 coords.find({ username: data }).sort( { timestamp: 1 }).toArray(function(err, result) {
-
-                    //var start_time = result[0].timestamp;
-
                     //start at second record
                     for(var i=1;i<result.length;i+=1) {
-                        //console.log(i);
-
-                        //var end_time = result[i].timestamp;
-
                         var time_diff = result[i].timestamp - result[0].timestamp;
-                        //console.log(time_diff);
-
+                        //console.log('time_diff: ' + time_diff);
                         var data = {
                             x: result[i].x,
                             y: result[i].y,
@@ -281,52 +172,93 @@ io.sockets.on('connection',
                             gSlider:result[i].gSlider,
                             bSlider:result[i].bSlider,
                             rEllipseFactor:result[i].rEllipseFactor
-
                         };
-                        //console.log(data);
-
                         setDelay(data, time_diff);
                     }
-                    //now start looking through the records one by one
-                    //could get next record and then start a timer
-                    //could cycle through each record in the array
+            });
+        });
 
-                    //if (err) throw err;
-                //});
+        socket.on('getAllData', function(data) {
+            var dataResult = data;
+            //console.log('getalldata name: ' + data.userName);
+            //console.log('getalldata num: ' + data.userNum);
+            //console.log('getalldata total: ' + data.totalUsers);
 
-                //client.close();
+
+            coords.find({ username: data.userName }).sort( { timestamp: 1 }).toArray(function(err, result) {
+                console.log('result length: ' + result.length);
+                let numRecordsInSegment = Math.floor(result.length / dataResult.totalUsers);
+                let startRecordNum = 1 + Math.floor((dataResult.userNum-1) * result.length / dataResult.totalUsers);
+                let endRecordNum = startRecordNum + numRecordsInSegment;
+
+                if (endRecordNum>result.length){
+                    endRecordNum=result.length-1;
+                }
+                //console.log('startrecordnum: ' + startRecordNum);
+                //console.log('endrecordnum: ' + endRecordNum);
+
+                //start at second record
+                if (endRecordNum > startRecordNum) {
+
+                    for (var i = startRecordNum; i < endRecordNum; i += 1) {
+                        //console.log(result[i]);
+                        var time_diff = (result[i+1].timestamp - result[startRecordNum].timestamp)*speedFactor;
+                        var user_anim_length = (result[endRecordNum].timestamp - result[startRecordNum].timestamp)*speedFactor;
+                        //console.log('result i+1: ' + result[i+1].timestamp);
+                        //console.log('result i: ' + result[i].timestamp);
+                        //console.log('time diff: ' + time_diff);
+                        var sendData = {
+                            x: result[i].x,
+                            y: result[i].y,
+                            ampScale: result[i].ampScale,
+                            xOffScale: result[i].xOffScale,
+                            rSlider: result[i].rSlider,
+                            gSlider: result[i].gSlider,
+                            bSlider: result[i].bSlider,
+                            rEllipseFactor: result[i].rEllipseFactor,
+                            userName: result[i].username
+                        };
+                        if (i < endRecordNum - 1 && (endRecordNum - startRecordNum > 1)) {
+                            //console.log('record num: ' + i);
+                            setDelay(sendData, time_diff);
+                        } else {
+
+                            setTimeout(function(){
+                                //console.log('running next user');
+                                socket.emit('run_next_user', 'next user');
+                            },user_anim_length);
+
+                        }
+                    }
+                }
+                else{
+                    //console.log('run next user');
+                    socket.emit('run_next_user', 'next user');
+                }
 
             });
         });
 
         socket.on('getUniqueUsernames', function(data) {
-            //MongoClient.connect(uri, function (err, client) {
-
-                //console.log("getting usernames")
-                //console.log(data);
-
-                //if (err) throw err;
-
-                //const coords = client.db('noaru').collection('coords');
-
                 coords.distinct('username', function(err, result) {
-
                         //console.log(result);
                         //only send to client
                     socket.emit('user_names',result);
 
                     if (err) throw err;
                 });
-
-                //client.close();
-
-
-
-            //});
         });
 
+        if (getAllUsersReq === true){
+            //console.log('getalluserreq');
+            //setTimeout(function(){
+                socket.emit('run_all_users','all users');
+            //},200);
+
+        }
+
         socket.on('disconnect', function() {
-            //console.log("Client has disconnected");
+
         });
     }
 );
