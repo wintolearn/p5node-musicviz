@@ -180,7 +180,7 @@ io.sockets.on('connection',
 
         socket.on('getAllData', function(data) {
             var dataResult = data;
-            //console.log('getalldata name: ' + data.userName);
+            console.log('getalldata name: ' + data.userName);
             //console.log('getalldata num: ' + data.userNum);
             //console.log('getalldata total: ' + data.totalUsers);
 
@@ -189,7 +189,7 @@ io.sockets.on('connection',
                 console.log('result length: ' + result.length);
                 let numRecordsInSegment = Math.floor(result.length / dataResult.totalUsers);
                 let startRecordNum = 1 + Math.floor((dataResult.userNum-1) * result.length / dataResult.totalUsers);
-                let endRecordNum = startRecordNum + numRecordsInSegment;
+                let endRecordNum = startRecordNum + numRecordsInSegment - 1;
 
                 if (endRecordNum>result.length){
                     endRecordNum=result.length-1;
@@ -218,7 +218,7 @@ io.sockets.on('connection',
                             rEllipseFactor: result[i].rEllipseFactor,
                             userName: result[i].username
                         };
-                        if (i < endRecordNum - 1 && (endRecordNum - startRecordNum > 1)) {
+                        if (i < endRecordNum - 1 && (endRecordNum - startRecordNum > 1) ) {
                             //console.log('record num: ' + i);
                             setDelay(sendData, time_diff);
                         } else {
@@ -258,7 +258,8 @@ io.sockets.on('connection',
         }
 
         socket.on('disconnect', function() {
-
+                getAllUsersReq = false;
+                requestInfo = '';
         });
     }
 );

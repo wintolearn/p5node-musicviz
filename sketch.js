@@ -54,7 +54,7 @@ var allUserNames = [];
 var userNum = 0;
 var runAllUsers = false;
 var ontoNextUser = false;
-var currentUserName;
+var currentUserName = '';
 
 function preload() {
     song = loadSound('./comprehension.mp3');
@@ -85,8 +85,10 @@ function toggleSong() {
 
     if (song.isPlaying()) {
         song.pause();
+        //song.play();
     } else {
         song.play();
+        //song.setVolume(0.05);
         playedOnce=true;
         spectrum = fft.analyze();
     }
@@ -112,7 +114,7 @@ function playAllUsers(){
     }
     socket.emit('getAllData',data);
     startDraw();
-    button.hide();
+    //button.hide();
 }
 
 function playNextUser(){
@@ -126,7 +128,9 @@ function playNextUser(){
         //totalUsers: 10;
 
     }
-    socket.emit('getAllData',data);
+    if(typeof allUserNames[userNum-1] !== 'undefined') {
+        socket.emit('getAllData', data);
+    }
 
 }
 
@@ -346,7 +350,7 @@ function setup() {
             inp.hide();
             introP1.hide();
             introP2.hide();
-            button.show();
+            //button.show();
             runAllUsers = true;
             //starting animation right away
             //playAllUsers();
@@ -387,6 +391,7 @@ function setup() {
         function(data) {
             //console.log('user_names data: ' + data);
             allUserNames = data;
+            allUserNames.reverse();
             console.log(allUserNames);
             if(runAllUsers===true){
                 playAllUsers();
@@ -451,13 +456,20 @@ function draw() {
         }
     }
 
-    textSize(40);
+    textSize(30);
     //fill(0);
     //rect(windowWidth/4,100,200,50);
     if(runAllUsers===true) {
+        textAlign(LEFT);
         fill(random(255), random(255), random(255));
-        text('@' + currentUserName, windowWidth *0.25, windowHeight*0.05);
-        //console.log(currentUserName);
+        if (currentUserName != '') {
+            if (currentUserName.charAt(0) === '@') {
+                currentUserName = currentUserName.substring(1);
+            }
+            text('@' + currentUserName, windowWidth * 0.05, windowHeight * 0.05);
+            //console.log(currentUserName);
+        }
+
     }
 
 
